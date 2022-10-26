@@ -24,47 +24,79 @@ const Navbar = () => {
 	const toggleIsMenuOpen = () => {
 		setIsMenuOpen((prevState) => {
 			return !prevState;
-		})
-		console.log(isMenuOpen);
-	}
+		});
+	};
 
-	return <div className={classes.Navbar}>
-		<ul className={classes.NavbarItems}>
+	const navbarContent = isMenuOpen ? (<ul className={classes.NavbarItems}>
 			<div className={classes.HamburgerMenu}>
 				<FontAwesomeIcon
 					icon={faBars}
-				onClick={toggleIsMenuOpen}/>
+					onClick={toggleIsMenuOpen}/>
 				<span className={classes.MenuName}>Imgur</span>
 			</div>
 			<li className={classes.Item}
 			    onMouseOver={addActiveClassHandler}
 			    onMouseOut={removeActiveClassHandler}>
 				<FontAwesomeIcon icon={faArrowRightToBracket}/>
-				Login
+				<span>Login</span>
 			</li>
 			<li className={classes.Item}
 			    onMouseOver={addActiveClassHandler}
 			    onMouseOut={removeActiveClassHandler}>
 				<FontAwesomeIcon icon={faFireFlameCurved}/>
-				Hot
+				<span>Hot</span>
 			</li>
 			<li className={classes.Item}
 			    onMouseOver={addActiveClassHandler}
 			    onMouseOut={removeActiveClassHandler}>
 				<FontAwesomeIcon icon={faStar}/>
-				Top
+				<span>Top</span>
 			</li>
 			<li className={`${classes.Item} ${classes.SignOut}`}
 			    onMouseOver={addActiveClassHandler}
 			    onMouseOut={removeActiveClassHandler}>
 				<FontAwesomeIcon icon={faRightFromBracket}/>
-				Sign Out
+				<span>Sign Out</span>
 			</li>
 			<li className={`${classes.Item} ${classes.UserWrapper}`}>
 				<FontAwesomeIcon icon={faUserCircle}/>
-				Filip Petrovski
+				<span>Filip Petrovski</span>
 			</li>
-		</ul>
+		</ul>)
+		:
+		(<ul className={classes.NavbarItems}>
+			<header className={classes.HamburgerMenu}>
+				<FontAwesomeIcon
+					icon={faBars}
+					onClick={toggleIsMenuOpen}/>
+			</header>
+			<li className={classes.Item}
+			    onMouseOver={addActiveClassHandler}
+			    onMouseOut={removeActiveClassHandler}>
+				<FontAwesomeIcon icon={faArrowRightToBracket}/>
+			</li>
+			<li className={classes.Item}
+			    onMouseOver={addActiveClassHandler}
+			    onMouseOut={removeActiveClassHandler}>
+				<FontAwesomeIcon icon={faFireFlameCurved}/>
+			</li>
+			<li className={classes.Item}
+			    onMouseOver={addActiveClassHandler}
+			    onMouseOut={removeActiveClassHandler}>
+				<FontAwesomeIcon icon={faStar}/>
+			</li>
+			<li className={`${classes.Item} ${classes.SignOut}`}
+			    onMouseOver={addActiveClassHandler}
+			    onMouseOut={removeActiveClassHandler}>
+				<FontAwesomeIcon icon={faRightFromBracket}/>
+			</li>
+			<li className={`${classes.Item} ${classes.UserWrapper}`}>
+				<FontAwesomeIcon icon={faUserCircle}/>
+			</li>
+		</ul>);
+
+	return <div className={`${classes.Navbar} ${isMenuOpen ? classes.FullNavbar : classes.IconsNavbar}`}>
+		{navbarContent}
 	</div>;
 };
 export default Navbar;
