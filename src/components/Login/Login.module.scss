@@ -1,4 +1,4 @@
-@import "/src/assets/styles/MainColors.module";
+@import "/src/assets/styles/Colors.module";
 
 .LoginWrapper {
   display: flex;
@@ -8,6 +8,7 @@
   height: 80vh;
   position: relative;
   padding: 30px;
+  margin: auto;
 
   .Button {
     background-color: $success;

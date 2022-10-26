@@ -1,0 +1,67 @@
+@import "/src/assets/styles/Colors.module";
+
+.Navbar {
+  min-width: 200px;
+  height: 100vh;
+  background-color: $primary;
+
+  .NavbarItems {
+	list-style: none;
+	height: inherit;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 0;
+	padding: 8px;
+
+	.HamburgerMenu {
+	  color: $white;
+	  display: flex;
+	  align-items: center;
+	  margin-bottom: 8px;
+	  border-bottom: 2px solid $white;
+	  padding: 8px;
+
+	  svg {
+		width: 30px;
+		height: 30px;
+		cursor: pointer;
+	  }
+
+	  .MenuName {
+		font-size: 24px;
+		margin-left: 8px;
+	  }
+	}
+
+	.Item {
+	  font-size: 20px;
+	  color: $white;
+	  cursor: pointer;
+	  margin-bottom: 8px;
+	  padding: 8px;
+
+	  &.Active {
+		background-color: $light-primary;
+		border-radius: 10px;
+	  }
+
+	  svg {
+		margin-right: 8px;
+		width: 20px;
+		height: 20px;
+	  }
+
+	  &.SignOut {
+		margin-top: auto;
+	  }
+
+	  &.UserWrapper {
+		cursor: initial;
+		line-height: 20px;
+		margin-bottom: 0;
+		padding: 8px;
+		border-top: 2px solid $white;
+	  }
+	}
+  }
+}
