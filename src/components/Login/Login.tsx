@@ -3,7 +3,6 @@ import classes from '../Login/Login.module.scss';
 
 const Login = () => {
 	const signInHandler = () => {
-		console.log('sign in clicked');
 		window.window.location.href = `https://api.imgur.com/oauth2/authorize?client_id=${process.env.REACT_APP_IMGUR_CLIENT_ID}&response_type=token`;
 	};
 
