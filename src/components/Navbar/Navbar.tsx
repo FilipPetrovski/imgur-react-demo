@@ -10,8 +10,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {BaseSyntheticEvent, useContext, useState} from 'react';
 import AuthContext from '../../stores/auth-context';
+import {User} from '../../shared/models/User.model';
 
-const Navbar = () => {
+const Navbar = (props: { user: User }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
 	const authCtx = useContext(AuthContext);
 
@@ -63,8 +64,9 @@ const Navbar = () => {
 					<span>Sign Out</span>
 				</li>}
 				<li className={`${classes.Item} ${classes.UserWrapper}`}>
-					<FontAwesomeIcon icon={faUserCircle}/>
-					<span>Filip Petrovski</span>
+					{authCtx.isLoggedIn ? <img className={classes.Avatar} src='https://imgur.com/user/filippetrovski1992/avatar?maxwidth=290' alt="user-avatar"/> :
+						<FontAwesomeIcon icon={faUserCircle}/>}
+					<span>{props.user.name}</span>
 				</li>
 			</div>
 		</ul>)
@@ -98,7 +100,8 @@ const Navbar = () => {
 					<FontAwesomeIcon icon={faRightFromBracket}/>
 				</li>}
 				<li className={`${classes.Item} ${classes.UserWrapper}`}>
-					<FontAwesomeIcon icon={faUserCircle}/>
+					{authCtx.isLoggedIn ? <img className={classes.Avatar} src={props.user.avatar} alt="user-avatar"/> :
+						<FontAwesomeIcon icon={faUserCircle}/>}
 				</li>
 			</div>
 		</ul>);

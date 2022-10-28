@@ -1,31 +1,45 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Login from './components/Login/Login';
 import classes from './App.module.scss';
-import {TOKEN_KEY} from './interceptors/request-interceptor';
+import httpClient from './interceptors/request-interceptor';
 import AuthContext from './stores/auth-context';
+import {User} from './shared/models/User.model';
+
+export const USER_KEY = 'user';
 
 function App() {
+	const [user, setUser] = useState(new User());
 	const authCtx = useContext(AuthContext);
 
 	useEffect(() => {
 		const url = window.location.href;
-		const separatedUrlStrings = url.split('&');
-		const accessToken = window.localStorage.getItem(TOKEN_KEY);
-		if (accessToken) {
-			authCtx.onLogin(accessToken);
-		}
-		if (separatedUrlStrings.length > 1) {
-			const accessToken = separatedUrlStrings[0].slice(separatedUrlStrings[0].indexOf('=') + 1, separatedUrlStrings[0].length);
-			const userName = separatedUrlStrings[4].slice(separatedUrlStrings[4].indexOf('=') + 1, separatedUrlStrings[4].length);
+		const loginParams = url.split('&');
+		if (loginParams.length > 1 && !authCtx.isLoggedIn) {
+			const accessToken = loginParams[0].slice(loginParams[0].indexOf('=') + 1, loginParams[0].length);
+			const userName = loginParams[4].slice(loginParams[4].indexOf('=') + 1, loginParams[4].length);
 			window.history.pushState({}, '', process.env.REACT_APP_API_URL);
 			authCtx.onLogin(accessToken);
+			httpClient.get(`https://api.imgur.com/3/account/${userName}/authorize?client_id=${process.env.REACT_APP_IMGUR_CLIENT_ID}`).then(
+				(response) => {
+					const newUser = new User({avatar: response.data.data.avatar, name: userName});
+					setUser(newUser);
+					window.localStorage.setItem(USER_KEY, JSON.stringify(newUser));
+				}
+			);
 		}
 	}, [authCtx]);
 
+	useEffect(() => {
+		const userFromLocalStorage = window.localStorage.getItem(USER_KEY);
+		if (userFromLocalStorage) {
+			setUser(new User(JSON.parse(userFromLocalStorage)));
+		}
+	}, []);
+
 	return (
 		<div className={classes.AppContainer}>
-			<Navbar/>
+			<Navbar user={user}/>
 			{!authCtx.isLoggedIn && <Login/>}
 		</div>
 	);

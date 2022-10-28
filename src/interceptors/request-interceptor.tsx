@@ -1,6 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
-
-export const TOKEN_KEY = 'access_token';
+import {TOKEN_KEY} from '../stores/auth-context';
 
 const requestInterceptor = (axiosInstance: AxiosInstance) => {
 	axiosInstance.interceptors.request.use(config => {
@@ -9,7 +8,7 @@ const requestInterceptor = (axiosInstance: AxiosInstance) => {
 				config.headers = {};
 			}
 			if (accessToken) {
-				config.headers['Authorization'] = 'Bearer' + accessToken;
+				config.headers['Authorization'] = 'Bearer ' + accessToken;
 			}
 			config.headers['Content-Type'] = 'application/json';
 			return config;
