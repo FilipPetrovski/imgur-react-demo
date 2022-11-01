@@ -9,7 +9,7 @@ import {
 	faBars
 } from '@fortawesome/free-solid-svg-icons';
 import {BaseSyntheticEvent, useContext, useState} from 'react';
-import AuthContext from '../../stores/auth-context';
+import AuthContext from '../../stores/AuthContext';
 import {User} from '../../shared/models/User.model';
 
 const Navbar = (props: { user: User }) => {

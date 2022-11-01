@@ -2,9 +2,11 @@ import React, {useContext, useEffect, useState} from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Login from './components/Login/Login';
 import classes from './App.module.scss';
-import httpClient from './interceptors/request-interceptor';
-import AuthContext from './stores/auth-context';
+import httpClient from './interceptors/RequestInterceptor';
+import AuthContext from './stores/AuthContext';
 import {User} from './shared/models/User.model';
+import Top from './components/Top/Top';
+import Hot from './components/Hot/Hot';
 
 export const USER_KEY = 'user';
 
@@ -41,6 +43,8 @@ function App() {
 		<div className={classes.AppContainer}>
 			<Navbar user={user}/>
 			{!authCtx.isLoggedIn && <Login/>}
+			<Top/>
+			<Hot/>
 		</div>
 	);
 }

@@ -1,5 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
-import {TOKEN_KEY} from '../stores/auth-context';
+import {TOKEN_KEY} from '../stores/AuthContext';
 
 const requestInterceptor = (axiosInstance: AxiosInstance) => {
 	axiosInstance.interceptors.request.use(config => {
