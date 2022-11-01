@@ -5,15 +5,19 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {AuthContextProvider} from './stores/AuthContext';
+import {Provider} from 'react-redux';
+import globalStore from './stores/globalStore';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
 root.render(
 	<React.StrictMode>
-		<AuthContextProvider>
-			<App/>
-		</AuthContextProvider>
+		<Provider store={globalStore}>
+			<AuthContextProvider>
+				<App/>
+			</AuthContextProvider>
+		</Provider>
 	</React.StrictMode>
 );
 
