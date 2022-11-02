@@ -66,7 +66,7 @@ const Navbar = (props: { user: User }) => {
 				<li className={`${classes.Item} ${classes.UserWrapper}`}>
 					{authCtx.isLoggedIn ? <img className={classes.Avatar} src='https://imgur.com/user/filippetrovski1992/avatar?maxwidth=290' alt="user-avatar"/> :
 						<FontAwesomeIcon icon={faUserCircle}/>}
-					<span>{props.user.name}</span>
+					<span>{props.user.name || 'Username'}</span>
 				</li>
 			</div>
 		</ul>)

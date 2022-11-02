@@ -21,9 +21,13 @@ export class Album {
 		return new Album({
 			id: response.id,
 			coverImageId: response.cover,
-			title: response.title,
+			title: response.title.length > 55 ? response.title.slice(0, 55) + '...' : response.title,
 			imagesCount: response.images_count,
 			images: response.images?.map((image: any) => Image.deserialize(image)) || []
 		});
+	}
+
+	getCoverImage(): Image | undefined {
+		return this.images?.find((image: Image) => image.id === this.coverImageId);
 	}
 }

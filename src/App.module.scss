@@ -1,3 +1,9 @@
 .AppContainer {
   display: flex;
+  overflow: hidden;
+
+  main {
+    height: 100vh;
+    overflow: auto;
+  }
 }

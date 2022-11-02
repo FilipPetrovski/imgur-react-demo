@@ -5,6 +5,7 @@ import {Album} from '../../shared/models/Album.model';
 import {useDispatch, useSelector} from 'react-redux';
 import {setAlbums} from '../../stores/albumsSlice';
 import {RootState} from '../../stores/globalStore';
+import Albums from '../../shared/components/Albums/Albums';
 
 const Top = () => {
 	const albums: Array<Album> = useSelector((state: RootState) => state.albums);
@@ -16,12 +17,7 @@ const Top = () => {
 			}
 		);
 	}, [dispatch]);
-	return <div>
-		{albums.map((album: Album) => (
-			<p key={album.id}>{album.imagesCount}</p>
-		))
-		}
-	</div>;
+	return <Albums albums={albums} />
 };
 
 export default Top;

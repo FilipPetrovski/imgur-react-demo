@@ -42,9 +42,12 @@ function App() {
 	return (
 		<div className={classes.AppContainer}>
 			<Navbar user={user}/>
-			{!authCtx.isLoggedIn && <Login/>}
-			<Top/>
-			<Hot/>
+			<main>
+				{!authCtx.isLoggedIn && <Login/>}
+				{/*<Top/>*/}
+				{/*<Hot/>*/}
+			</main>
+
 		</div>
 	);
 }
