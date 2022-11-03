@@ -1,0 +1,41 @@
+@import "src/assets/styles/Colors.module";
+
+.AlbumWrapper {
+  margin: 32px auto;
+  width: inherit;
+  max-width: 800px;
+  height: 600px;
+  border-radius: 10px;
+  border: 3px solid $primary-light;
+  box-shadow: 0 50px 50px 0 rgba(16, 37, 114, 0.1);
+
+  .CurrentImageText {
+	color: $primary;
+	font-weight: bold;
+    margin: 16px 0;
+
+	span {
+	  margin-left: 8px;
+	}
+  }
+
+  .PreviousImageIcon, .NextImageIcon {
+    margin: 16px 0;
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
+
+	&.PreviousImageIcon {
+	  float: left;
+	}
+
+	&.NextImageIcon {
+	  float: right;
+	}
+
+	&.disabled {
+	  pointer-events: none;
+	  opacity: 0.3;
+	}
+  }
+}

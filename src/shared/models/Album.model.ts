@@ -22,7 +22,7 @@ export class Album {
 			id: response.id,
 			coverImageId: response.cover,
 			title: response.title.length > 55 ? response.title.slice(0, 55) + '...' : response.title,
-			imagesCount: response.images_count,
+			imagesCount: response.images_count || 0,
 			images: response.images?.map((image: any) => Image.deserialize(image)) || []
 		});
 	}

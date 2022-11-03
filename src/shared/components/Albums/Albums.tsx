@@ -14,9 +14,11 @@ const Albums = (props: { albums: Album[] }) => {
 		element.currentTarget.classList.remove(classes.HoverAlbum);
 	};
 
-	const goToAlbumDetails = (albumId: string | undefined) => {
-		navigate('/album/' + albumId);
-	}
+	const goToAlbumDetails = (album: Album) => {
+		if (album.imagesCount) {
+			navigate('/album/' + album.id);
+		}
+	};
 
 	return <div className={`${classes.Albums} row`}>
 		{props.albums.map((album: Album) => (
@@ -24,11 +26,12 @@ const Albums = (props: { albums: Album[] }) => {
 			     className={`${classes.Album} col-xl-3 col-lg-5 col-md-8 col-sm-10 col-10`}
 			     onMouseOver={addHoverClass}
 			     onMouseOut={removeHoverClass}
-			     onClick={() => goToAlbumDetails(album.id)}>
+			     onClick={() => goToAlbumDetails(album)}>
 				<div className={classes.ImageWrapper}>
 					<img className="img-fluid"
-					     src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
-					     alt="cover-image"/>
+						// TODO Replace the src with the actual album cover image
+						 src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
+						 alt={album.getCoverImage()?.description}/>
 				</div>
 				<div className={classes.TitleWrapper}>
 					<p className={classes.Title}>{album.title}</p>
