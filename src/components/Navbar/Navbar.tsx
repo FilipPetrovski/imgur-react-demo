@@ -11,6 +11,7 @@ import {
 import {BaseSyntheticEvent, useContext, useState} from 'react';
 import AuthContext from '../../stores/AuthContext';
 import {User} from '../../shared/models/User.model';
+import {Link} from 'react-router-dom';
 
 const Navbar = (props: { user: User }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -37,24 +38,30 @@ const Navbar = (props: { user: User }) => {
 					onClick={toggleIsMenuOpen}/>
 				<span className={classes.MenuName}>Imgur</span>
 			</div>
-			{!authCtx.isLoggedIn && <li className={classes.Item}
-			                            onMouseOver={addActiveClassHandler}
-			                            onMouseOut={removeActiveClassHandler}>
-				<FontAwesomeIcon icon={faArrowRightToBracket}/>
-				<span>Login</span>
-			</li>}
-			<li className={classes.Item}
-			    onMouseOver={addActiveClassHandler}
-			    onMouseOut={removeActiveClassHandler}>
-				<FontAwesomeIcon icon={faFireFlameCurved}/>
-				<span>Hot</span>
-			</li>
-			<li className={classes.Item}
-			    onMouseOver={addActiveClassHandler}
-			    onMouseOut={removeActiveClassHandler}>
-				<FontAwesomeIcon icon={faStar}/>
-				<span>Top</span>
-			</li>
+			{!authCtx.isLoggedIn && <Link to="login" className={classes.Link}>
+				<li className={classes.Item}
+				    onMouseOver={addActiveClassHandler}
+				    onMouseOut={removeActiveClassHandler}>
+					<FontAwesomeIcon icon={faArrowRightToBracket}/>
+					<span>Login</span>
+				</li>
+			</Link>}
+			<Link to="hot" className={classes.Link}>
+				<li className={classes.Item}
+				    onMouseOver={addActiveClassHandler}
+				    onMouseOut={removeActiveClassHandler}>
+					<FontAwesomeIcon icon={faFireFlameCurved}/>
+					<span>Hot</span>
+				</li>
+			</Link>
+			<Link to="top" className={classes.Link}>
+				<li className={classes.Item}
+				    onMouseOver={addActiveClassHandler}
+				    onMouseOut={removeActiveClassHandler}>
+					<FontAwesomeIcon icon={faStar}/>
+					<span>Top</span>
+				</li>
+			</Link>
 			<div className="mt-auto">
 				{authCtx.isLoggedIn && <li className={`${classes.Item} ${classes.SignOut}`}
 				                           onMouseOver={addActiveClassHandler}
@@ -64,7 +71,8 @@ const Navbar = (props: { user: User }) => {
 					<span>Sign Out</span>
 				</li>}
 				<li className={`${classes.Item} ${classes.UserWrapper}`}>
-					{authCtx.isLoggedIn ? <img className={classes.Avatar} src='https://imgur.com/user/filippetrovski1992/avatar?maxwidth=290' alt="user-avatar"/> :
+					{authCtx.isLoggedIn ? <img className={classes.Avatar} src="https://imgur.com/user/filippetrovski1992/avatar?maxwidth=290"
+					                           alt="user-avatar"/> :
 						<FontAwesomeIcon icon={faUserCircle}/>}
 					<span>{props.user.name || 'Username'}</span>
 				</li>
@@ -77,21 +85,27 @@ const Navbar = (props: { user: User }) => {
 					icon={faBars}
 					onClick={toggleIsMenuOpen}/>
 			</header>
-			{!authCtx.isLoggedIn && <li className={classes.Item}
-			                            onMouseOver={addActiveClassHandler}
-			                            onMouseOut={removeActiveClassHandler}>
-				<FontAwesomeIcon icon={faArrowRightToBracket}/>
-			</li>}
-			<li className={classes.Item}
-			    onMouseOver={addActiveClassHandler}
-			    onMouseOut={removeActiveClassHandler}>
-				<FontAwesomeIcon icon={faFireFlameCurved}/>
-			</li>
-			<li className={classes.Item}
-			    onMouseOver={addActiveClassHandler}
-			    onMouseOut={removeActiveClassHandler}>
-				<FontAwesomeIcon icon={faStar}/>
-			</li>
+			{!authCtx.isLoggedIn && <Link to="login" className={classes.Link}>
+				<li className={classes.Item}
+				    onMouseOver={addActiveClassHandler}
+				    onMouseOut={removeActiveClassHandler}>
+					<FontAwesomeIcon icon={faArrowRightToBracket}/>
+				</li>
+			</Link>}
+			<Link to="hot" className={classes.Link}>
+				<li className={classes.Item}
+				    onMouseOver={addActiveClassHandler}
+				    onMouseOut={removeActiveClassHandler}>
+					<FontAwesomeIcon icon={faFireFlameCurved}/>
+				</li>
+			</Link>
+			<Link to="top" className={classes.Link}>
+				<li className={classes.Item}
+				    onMouseOver={addActiveClassHandler}
+				    onMouseOut={removeActiveClassHandler}>
+					<FontAwesomeIcon icon={faStar}/>
+				</li>
+			</Link>
 			<div className="mt-auto">
 				{authCtx.isLoggedIn && <li className={`${classes.Item} ${classes.SignOut}`}
 				                           onMouseOver={addActiveClassHandler}

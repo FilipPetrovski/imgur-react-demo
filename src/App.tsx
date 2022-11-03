@@ -7,6 +7,9 @@ import AuthContext from './stores/AuthContext';
 import {User} from './shared/models/User.model';
 import Top from './components/Top/Top';
 import Hot from './components/Hot/Hot';
+import {Routes} from 'react-router-dom';
+import {Route} from 'react-router';
+import AlbumDetails from './shared/components/Albums/AlbumDetails/AlbumDetails';
 
 export const USER_KEY = 'user';
 
@@ -43,9 +46,12 @@ function App() {
 		<div className={classes.AppContainer}>
 			<Navbar user={user}/>
 			<main>
-				{!authCtx.isLoggedIn && <Login/>}
-				{/*<Top/>*/}
-				{/*<Hot/>*/}
+				<Routes>
+					{!authCtx.isLoggedIn && <Route path='login' element={<Login />} />}
+					<Route path='hot' element={<Hot />} />
+					<Route path='top' element={<Top />} />
+					<Route path='album/:albumId' element={<AlbumDetails />} />
+				</Routes>
 			</main>
 
 		</div>

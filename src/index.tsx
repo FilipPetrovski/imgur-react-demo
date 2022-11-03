@@ -7,17 +7,20 @@ import reportWebVitals from './reportWebVitals';
 import {AuthContextProvider} from './stores/AuthContext';
 import {Provider} from 'react-redux';
 import globalStore from './stores/globalStore';
+import {BrowserRouter} from 'react-router-dom';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
 root.render(
 	<React.StrictMode>
-		<Provider store={globalStore}>
-			<AuthContextProvider>
-				<App/>
-			</AuthContextProvider>
-		</Provider>
+		<BrowserRouter>
+			<Provider store={globalStore}>
+				<AuthContextProvider>
+					<App/>
+				</AuthContextProvider>
+			</Provider>
+		</BrowserRouter>
 	</React.StrictMode>
 );
 
