@@ -1,4 +1,4 @@
-import classes from '../Top/Top.module.scss';
+import './Top.module.scss';
 import {useEffect} from 'react';
 import httpClient from '../../interceptors/RequestInterceptor';
 import {Album} from '../../shared/models/Album.model';
@@ -17,7 +17,10 @@ const Top = () => {
 			}
 		);
 	}, [dispatch]);
-	return <Albums albums={albums} />
+	return <>
+		<h1>TOP</h1>
+		<Albums albums={albums}/>
+	</>;
 };
 
 export default Top;
