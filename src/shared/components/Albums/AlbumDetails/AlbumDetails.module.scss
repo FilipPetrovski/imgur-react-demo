@@ -12,15 +12,29 @@
   .CurrentImageText {
 	color: $primary;
 	font-weight: bold;
-    margin: 16px 0;
+	height: 24px;
+	margin: 16px 0;
 
 	span {
 	  margin-left: 8px;
 	}
   }
 
+  .ImageWrapper {
+	width: 100%;
+	min-width: 460px;
+	height: calc(600px - 24px - 32px - 32px - 30px);
+
+	img {
+	  width: inherit;
+	  min-width: inherit;
+	  height: inherit;
+	  object-fit: cover;
+	}
+  }
+
   .PreviousImageIcon, .NextImageIcon {
-    margin: 16px 0;
+	margin: 16px 0;
 	cursor: pointer;
 	width: 30px;
 	height: 30px;
@@ -31,11 +45,6 @@
 
 	&.NextImageIcon {
 	  float: right;
-	}
-
-	&.disabled {
-	  pointer-events: none;
-	  opacity: 0.3;
 	}
   }
 }

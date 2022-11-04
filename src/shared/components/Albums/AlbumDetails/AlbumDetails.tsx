@@ -5,6 +5,7 @@ import {Album} from '../../../models/Album.model';
 import classes from './AlbumDetails.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import noImage from '../../../../assets/images/No-Image-Placeholder.svg.png';
 
 const AlbumDetails = () => {
 	const [currentImageNumber, setCurrentImageNumber] = useState(1);
@@ -30,13 +31,13 @@ const AlbumDetails = () => {
 		if (currentImageNumber < album.imagesCount) {
 			setCurrentImageNumber((prevState => prevState + 1));
 		}
-	}
+	};
 
 	const goToPreviousImage = () => {
 		if (currentImageNumber > 1) {
 			setCurrentImageNumber((prevState => prevState - 1));
 		}
-	}
+	};
 
 	return <div className="row">
 		<div className={`${classes.AlbumWrapper} col-xl-12 col-lg-12 col-md-12 col-8`}>
@@ -44,16 +45,18 @@ const AlbumDetails = () => {
 				<span>{currentImageNumber} / {album.imagesCount}</span>
 			</p>
 			<div className={classes.ImageWrapper}>
-				{/*TODO replace img src with {album.images[currentImageNumber - 1].url}*/}
-				{album.images?.length &&
-					<img
-						src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
-						alt={album.images[currentImageNumber - 1].description}/>}
+				{album.imagesCount ?
+					<img className="img-fluid"
+					     src={album && album.images && album.images[currentImageNumber - 1].url}
+					     alt={album && album.images && album.images[currentImageNumber - 1].description}/>
+					:
+					<img src={noImage} alt="no preview"/>
+				}
 			</div>
-			<FontAwesomeIcon className={`${classes.PreviousImageIcon} ${currentImageNumber <= 1 && classes.disabled}`}
+			<FontAwesomeIcon className={`${classes.PreviousImageIcon} ${currentImageNumber <= 1 && 'disabled'}`}
 			                 icon={faChevronLeft}
 			                 onClick={goToPreviousImage}/>
-			<FontAwesomeIcon className={`${classes.NextImageIcon} ${currentImageNumber === album.imagesCount && classes.disabled}`}
+			<FontAwesomeIcon className={`${classes.NextImageIcon} ${currentImageNumber === album.imagesCount && 'disabled'}`}
 			                 icon={faChevronRight}
 			                 onClick={goToNextImage}/>
 		</div>

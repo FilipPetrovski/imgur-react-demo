@@ -1,4 +1,4 @@
-import imgurImg from '../../assets/Imgur_logo.png';
+import imgurImg from '../../assets/images/Imgur_logo.png';
 import classes from '../Login/Login.module.scss';
 
 const Login = () => {
