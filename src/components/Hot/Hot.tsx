@@ -1,4 +1,4 @@
-import '../Hot/Hot.module.scss';
+import classes from '../Hot/Hot.module.scss';
 import {useEffect} from 'react';
 import httpClient from '../../interceptors/RequestInterceptor';
 import {Album} from '../../shared/models/Album.model';
@@ -18,7 +18,7 @@ const Hot = () => {
 		);
 	}, [dispatch]);
 	return <>
-		<h1>HOT</h1>
+		<h1 className={classes.Title}>HOT</h1>
 		<Albums albums={albums}/>
 	</>;
 };

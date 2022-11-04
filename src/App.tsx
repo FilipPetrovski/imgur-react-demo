@@ -7,23 +7,26 @@ import AuthContext from './stores/AuthContext';
 import {User} from './shared/models/User.model';
 import Top from './components/Top/Top';
 import Hot from './components/Hot/Hot';
-import {Routes} from 'react-router-dom';
-import {Route} from 'react-router';
+import {Routes, useNavigate} from 'react-router-dom';
+import {Route, useLocation} from 'react-router';
 import AlbumDetails from './shared/components/Albums/AlbumDetails/AlbumDetails';
+import Layout from './components/Layout/Layout';
 
 export const USER_KEY = 'user';
 
 function App() {
 	const [user, setUser] = useState(new User());
 	const authCtx = useContext(AuthContext);
+	const location = useLocation();
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		const url = window.location.href;
+		const url = location.hash;
 		const loginParams = url.split('&');
-		if (loginParams.length > 1 && !authCtx.isLoggedIn) {
+		if (url && loginParams.length > 1 && !authCtx.isLoggedIn) {
 			const accessToken = loginParams[0].slice(loginParams[0].indexOf('=') + 1, loginParams[0].length);
 			const userName = loginParams[4].slice(loginParams[4].indexOf('=') + 1, loginParams[4].length);
-			window.history.pushState({}, '', process.env.REACT_APP_API_URL);
+			navigate('/');
 			authCtx.onLogin(accessToken);
 			httpClient.get(`https://api.imgur.com/3/account/${userName}/authorize?client_id=${process.env.REACT_APP_IMGUR_CLIENT_ID}`).then(
 				(response) => {
@@ -47,13 +50,14 @@ function App() {
 			<Navbar user={user}/>
 			<main>
 				<Routes>
-					{!authCtx.isLoggedIn && <Route path='login' element={<Login />} />}
-					<Route path='hot' element={<Hot />} />
-					<Route path='top' element={<Top />} />
-					<Route path='album/:albumId' element={<AlbumDetails />} />
+					<Route path='/' element={<Layout />}>
+						{!authCtx.isLoggedIn && <Route path='login' element={<Login />} />}
+						<Route path='hot' element={<Hot />} />
+						<Route path='top' element={<Top />} />
+						<Route path='album/:albumId' element={<AlbumDetails />} />
+					</Route>
 				</Routes>
 			</main>
-
 		</div>
 	);
 }

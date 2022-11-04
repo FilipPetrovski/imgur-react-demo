@@ -1,4 +1,4 @@
-import './Top.module.scss';
+import classes from './Top.module.scss';
 import {useEffect} from 'react';
 import httpClient from '../../interceptors/RequestInterceptor';
 import {Album} from '../../shared/models/Album.model';
@@ -18,7 +18,7 @@ const Top = () => {
 		);
 	}, [dispatch]);
 	return <>
-		<h1>TOP</h1>
+		<h1 className={classes.Title}>TOP</h1>
 		<Albums albums={albums}/>
 	</>;
 };
