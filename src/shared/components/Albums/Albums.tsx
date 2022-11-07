@@ -2,6 +2,7 @@ import {Album} from '../../models/Album.model';
 import classes from '../Albums/Albums.module.scss';
 import {BaseSyntheticEvent} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {RoutesName} from '../../models/Routes';
 
 const Albums = (props: { albums: Album[] }) => {
 	const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Albums = (props: { albums: Album[] }) => {
 
 	const goToAlbumDetails = (album: Album) => {
 		if (album.imagesCount) {
-			navigate('/album/' + album.id);
+			navigate(`/${RoutesName.Album}/${album.id}`);
 		}
 	};
 

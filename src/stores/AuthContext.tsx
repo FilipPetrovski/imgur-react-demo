@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {USER_KEY} from '../App';
 import {useNavigate} from 'react-router-dom';
+import {RoutesName} from '../shared/models/Routes';
 
 export const TOKEN_KEY = 'access_token';
 
@@ -27,7 +28,7 @@ export const AuthContextProvider = (props: { children: string | number | boolean
 		window.localStorage.removeItem(TOKEN_KEY);
 		window.localStorage.removeItem(USER_KEY);
 		setIsLoggedIn(false);
-		navigate('login');
+		navigate(RoutesName.Login);
 	};
 	const loginHandler = (accessToken: string) => {
 		const accessTokenFromStorage = window.localStorage.getItem(TOKEN_KEY);

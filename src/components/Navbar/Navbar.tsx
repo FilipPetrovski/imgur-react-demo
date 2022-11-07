@@ -12,6 +12,7 @@ import {BaseSyntheticEvent, useContext, useState} from 'react';
 import AuthContext from '../../stores/AuthContext';
 import {User} from '../../shared/models/User.model';
 import {Link} from 'react-router-dom';
+import {RoutesName} from '../../shared/models/Routes';
 
 const Navbar = (props: { user: User }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -38,7 +39,7 @@ const Navbar = (props: { user: User }) => {
 					onClick={toggleIsMenuOpen}/>
 				<span className={classes.MenuName}>Imgur</span>
 			</div>
-			{!authCtx.isLoggedIn && <Link to="login" className={classes.Link}>
+			{!authCtx.isLoggedIn && <Link to={RoutesName.Login} className={classes.Link}>
 				<li className={classes.Item}
 				    onMouseOver={addActiveClassHandler}
 				    onMouseOut={removeActiveClassHandler}>
@@ -46,7 +47,7 @@ const Navbar = (props: { user: User }) => {
 					<span>Login</span>
 				</li>
 			</Link>}
-			<Link to="hot" className={classes.Link}>
+			<Link to={RoutesName.Hot} className={classes.Link}>
 				<li className={classes.Item}
 				    onMouseOver={addActiveClassHandler}
 				    onMouseOut={removeActiveClassHandler}>
@@ -54,7 +55,7 @@ const Navbar = (props: { user: User }) => {
 					<span>Hot</span>
 				</li>
 			</Link>
-			<Link to="top" className={classes.Link}>
+			<Link to={RoutesName.Top} className={classes.Link}>
 				<li className={classes.Item}
 				    onMouseOver={addActiveClassHandler}
 				    onMouseOut={removeActiveClassHandler}>
@@ -85,21 +86,21 @@ const Navbar = (props: { user: User }) => {
 					icon={faBars}
 					onClick={toggleIsMenuOpen}/>
 			</header>
-			{!authCtx.isLoggedIn && <Link to="login" className={classes.Link}>
+			{!authCtx.isLoggedIn && <Link to={RoutesName.Login} className={classes.Link}>
 				<li className={classes.Item}
 				    onMouseOver={addActiveClassHandler}
 				    onMouseOut={removeActiveClassHandler}>
 					<FontAwesomeIcon icon={faArrowRightToBracket}/>
 				</li>
 			</Link>}
-			<Link to="hot" className={classes.Link}>
+			<Link to={RoutesName.Hot} className={classes.Link}>
 				<li className={classes.Item}
 				    onMouseOver={addActiveClassHandler}
 				    onMouseOut={removeActiveClassHandler}>
 					<FontAwesomeIcon icon={faFireFlameCurved}/>
 				</li>
 			</Link>
-			<Link to="top" className={classes.Link}>
+			<Link to={RoutesName.Top} className={classes.Link}>
 				<li className={classes.Item}
 				    onMouseOver={addActiveClassHandler}
 				    onMouseOut={removeActiveClassHandler}>

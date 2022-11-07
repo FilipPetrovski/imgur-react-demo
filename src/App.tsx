@@ -11,6 +11,7 @@ import {Routes, useNavigate} from 'react-router-dom';
 import {Route, useLocation} from 'react-router';
 import AlbumDetails from './shared/components/Albums/AlbumDetails/AlbumDetails';
 import Layout from './components/Layout/Layout';
+import {RoutesName} from './shared/models/Routes';
 
 export const USER_KEY = 'user';
 
@@ -36,7 +37,7 @@ function App() {
 				}
 			);
 		}
-	}, [authCtx]);
+	}, [authCtx, navigate, location]);
 
 	useEffect(() => {
 		const userFromLocalStorage = window.localStorage.getItem(USER_KEY);
@@ -51,10 +52,10 @@ function App() {
 			<main>
 				<Routes>
 					<Route path='/' element={<Layout />}>
-						{!authCtx.isLoggedIn && <Route path='login' element={<Login />} />}
-						<Route path='hot' element={<Hot />} />
-						<Route path='top' element={<Top />} />
-						<Route path='album/:albumId' element={<AlbumDetails />} />
+						{!authCtx.isLoggedIn && <Route path={RoutesName.Login} element={<Login />} />}
+						<Route path={RoutesName.Hot} element={<Hot />} />
+						<Route path={RoutesName.Top} element={<Top />} />
+						<Route path={`${RoutesName.Album}/:albumId`} element={<AlbumDetails />} />
 					</Route>
 				</Routes>
 			</main>
