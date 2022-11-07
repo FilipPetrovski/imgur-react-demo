@@ -4,7 +4,6 @@ import Login from './components/Login/Login';
 import classes from './App.module.scss';
 import httpClient from './interceptors/RequestInterceptor';
 import AuthContext from './stores/AuthContext';
-import {User} from './shared/models/User.model';
 import Top from './components/Top/Top';
 import Hot from './components/Hot/Hot';
 import {Routes, useNavigate} from 'react-router-dom';
@@ -12,6 +11,9 @@ import {Route, useLocation} from 'react-router';
 import AlbumDetails from './shared/components/Albums/AlbumDetails/AlbumDetails';
 import Layout from './components/Layout/Layout';
 import {RoutesName} from './shared/models/Routes';
+import {User} from './components/Navbar/models/User.model';
+import MyGallery from './components/MyGallery/MyGallery';
+import AddImages from './components/AddImages/AddImages';
 
 export const USER_KEY = 'user';
 
@@ -53,6 +55,8 @@ function App() {
 				<Routes>
 					<Route path='/' element={<Layout />}>
 						{!authCtx.isLoggedIn && <Route path={RoutesName.Login} element={<Login />} />}
+						{authCtx.isLoggedIn && <Route path={RoutesName.MyGallery} element={<MyGallery />} />}
+						{authCtx.isLoggedIn && <Route path={RoutesName.AddImages} element={<AddImages />} />}
 						<Route path={RoutesName.Hot} element={<Hot />} />
 						<Route path={RoutesName.Top} element={<Top />} />
 						<Route path={`${RoutesName.Album}/:albumId`} element={<AlbumDetails />} />

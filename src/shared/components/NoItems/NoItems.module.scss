@@ -1,0 +1,30 @@
+@import "../../../assets/styles/Colors.module";
+
+.Wrapper {
+  width: 400px;
+  border-radius: 10px;
+  background: $white;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid $primary-light;
+  box-shadow: 0 2px 10px 0 rgba(16, 37, 114, 0.15);
+  margin-top: 32px;
+
+  .NothingFound {
+	color: $white;
+	background-color: $primary;
+	border-radius: 10px;
+	margin: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-weight: 600;
+  }
+
+  .Message {
+	margin: 0 20px 20px;
+	text-align: center;
+	font-weight: 600;
+  }
+}

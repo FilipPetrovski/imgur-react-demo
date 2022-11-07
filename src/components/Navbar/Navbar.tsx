@@ -6,13 +6,15 @@ import {
 	faRightFromBracket,
 	faStar,
 	faUserCircle,
-	faBars
+	faBars,
+	faPhotoFilm,
+	faPlus
 } from '@fortawesome/free-solid-svg-icons';
 import {BaseSyntheticEvent, useContext, useState} from 'react';
 import AuthContext from '../../stores/AuthContext';
-import {User} from '../../shared/models/User.model';
 import {Link} from 'react-router-dom';
 import {RoutesName} from '../../shared/models/Routes';
+import {User} from './models/User.model';
 
 const Navbar = (props: { user: User }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -32,19 +34,35 @@ const Navbar = (props: { user: User }) => {
 		});
 	};
 
-	const navbarContent = isMenuOpen ? (<ul className={classes.NavbarItems}>
+	const navbarContent = (<ul className={classes.NavbarItems}>
 			<div className={classes.HamburgerMenu}>
 				<FontAwesomeIcon
 					icon={faBars}
 					onClick={toggleIsMenuOpen}/>
-				<span className={classes.MenuName}>Imgur</span>
+				{isMenuOpen && <span className={classes.MenuName}>Imgur</span>}
 			</div>
 			{!authCtx.isLoggedIn && <Link to={RoutesName.Login} className={classes.Link}>
 				<li className={classes.Item}
 				    onMouseOver={addActiveClassHandler}
 				    onMouseOut={removeActiveClassHandler}>
 					<FontAwesomeIcon icon={faArrowRightToBracket}/>
-					<span>Login</span>
+					{isMenuOpen && <span>Login</span>}
+				</li>
+			</Link>}
+			{authCtx.isLoggedIn && <Link to={RoutesName.MyGallery} className={classes.Link}>
+				<li className={classes.Item}
+				    onMouseOver={addActiveClassHandler}
+				    onMouseOut={removeActiveClassHandler}>
+					<FontAwesomeIcon icon={faPhotoFilm}/>
+					{isMenuOpen && <span>My Gallery</span>}
+				</li>
+			</Link>}
+			{authCtx.isLoggedIn && <Link to={RoutesName.AddImages} className={classes.Link}>
+				<li className={classes.Item}
+				    onMouseOver={addActiveClassHandler}
+				    onMouseOut={removeActiveClassHandler}>
+					<FontAwesomeIcon icon={faPlus}/>
+					{isMenuOpen && <span>Add New Image</span>}
 				</li>
 			</Link>}
 			<Link to={RoutesName.Hot} className={classes.Link}>
@@ -52,7 +70,7 @@ const Navbar = (props: { user: User }) => {
 				    onMouseOver={addActiveClassHandler}
 				    onMouseOut={removeActiveClassHandler}>
 					<FontAwesomeIcon icon={faFireFlameCurved}/>
-					<span>Hot</span>
+					{isMenuOpen && <span>Hot</span>}
 				</li>
 			</Link>
 			<Link to={RoutesName.Top} className={classes.Link}>
@@ -60,7 +78,7 @@ const Navbar = (props: { user: User }) => {
 				    onMouseOver={addActiveClassHandler}
 				    onMouseOut={removeActiveClassHandler}>
 					<FontAwesomeIcon icon={faStar}/>
-					<span>Top</span>
+					{isMenuOpen && <span>Top</span>}
 				</li>
 			</Link>
 			<div className="mt-auto">
@@ -69,54 +87,16 @@ const Navbar = (props: { user: User }) => {
 				                           onMouseOut={removeActiveClassHandler}
 				                           onClick={authCtx.onLogout}>
 					<FontAwesomeIcon icon={faRightFromBracket}/>
-					<span>Sign Out</span>
+					{isMenuOpen && <span>Sign Out</span>}
 				</li>}
 				<li className={`${classes.Item} ${classes.UserWrapper}`}>
-					{authCtx.isLoggedIn ? <img className={classes.Avatar} src="https://imgur.com/user/filippetrovski1992/avatar?maxwidth=290"
+					{
+						// TODO add the user avatar here
+						authCtx.isLoggedIn ? <img className={classes.Avatar}
+					                           src="https://imgur.com/user/filippetrovski1992/avatar?maxwidth=290"
 					                           alt="user-avatar"/> :
 						<FontAwesomeIcon icon={faUserCircle}/>}
-					<span>{props.user.name || 'Username'}</span>
-				</li>
-			</div>
-		</ul>)
-		:
-		(<ul className={classes.NavbarItems}>
-			<header className={classes.HamburgerMenu}>
-				<FontAwesomeIcon
-					icon={faBars}
-					onClick={toggleIsMenuOpen}/>
-			</header>
-			{!authCtx.isLoggedIn && <Link to={RoutesName.Login} className={classes.Link}>
-				<li className={classes.Item}
-				    onMouseOver={addActiveClassHandler}
-				    onMouseOut={removeActiveClassHandler}>
-					<FontAwesomeIcon icon={faArrowRightToBracket}/>
-				</li>
-			</Link>}
-			<Link to={RoutesName.Hot} className={classes.Link}>
-				<li className={classes.Item}
-				    onMouseOver={addActiveClassHandler}
-				    onMouseOut={removeActiveClassHandler}>
-					<FontAwesomeIcon icon={faFireFlameCurved}/>
-				</li>
-			</Link>
-			<Link to={RoutesName.Top} className={classes.Link}>
-				<li className={classes.Item}
-				    onMouseOver={addActiveClassHandler}
-				    onMouseOut={removeActiveClassHandler}>
-					<FontAwesomeIcon icon={faStar}/>
-				</li>
-			</Link>
-			<div className="mt-auto">
-				{authCtx.isLoggedIn && <li className={`${classes.Item} ${classes.SignOut}`}
-				                           onMouseOver={addActiveClassHandler}
-				                           onMouseOut={removeActiveClassHandler}
-				                           onClick={authCtx.onLogout}>
-					<FontAwesomeIcon icon={faRightFromBracket}/>
-				</li>}
-				<li className={`${classes.Item} ${classes.UserWrapper}`}>
-					{authCtx.isLoggedIn ? <img className={classes.Avatar} src={props.user.avatar} alt="user-avatar"/> :
-						<FontAwesomeIcon icon={faUserCircle}/>}
+					{isMenuOpen && <span>{props.user.name || 'Username'}</span>}
 				</li>
 			</div>
 		</ul>);
