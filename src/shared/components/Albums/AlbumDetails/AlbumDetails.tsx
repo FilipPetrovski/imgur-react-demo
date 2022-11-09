@@ -4,13 +4,23 @@ import {useParams} from 'react-router';
 import {Album} from '../../../models/Album.model';
 import classes from './AlbumDetails.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import {
+	faChevronLeft,
+	faChevronRight,
+	faPlus,
+	faPenToSquare,
+	faTrashCan
+} from '@fortawesome/free-solid-svg-icons';
+import {faCircleCheck, faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import noImage from '../../../../assets/images/No-Image-Placeholder.svg.png';
+import {RoutesName} from '../../../models/Routes';
 
 const AlbumDetails = () => {
 	const [currentImageNumber, setCurrentImageNumber] = useState(1);
+	const [isEditMode, setIsEditMode] = useState(false);
 	const [album, setAlbum] = useState(new Album());
-	const {albumId} = useParams();
+	const {albumId, gallery} = useParams();
+	const isMyGallery = gallery === RoutesName.MyGallery;
 	let loadedOnce: boolean; // TODO this loadedOnce is fix for development so that the use effect wont run twice and send two request -> https://dev.to/ag-grid/react-18-avoiding-use-effect-getting-called-twice-4i9e
 
 	useEffect(() => {
@@ -41,9 +51,35 @@ const AlbumDetails = () => {
 
 	return <div className="row">
 		<div className={`${classes.AlbumWrapper} col-xl-12 col-lg-12 col-md-12 col-8`}>
-			<p className={classes.CurrentImageText}>Current image:
-				<span>{currentImageNumber} / {album.imagesCount}</span>
-			</p>
+			<header className={classes.Header}>
+				{!!album.imagesCount &&
+					<p className={classes.CurrentImageText}>Current image:
+						<span>{currentImageNumber} / {album.imagesCount}</span>
+					</p>
+				}
+				{isMyGallery && <div className={classes.Icons}>
+						{!isEditMode ?
+							<>
+								<FontAwesomeIcon icon={faPlus}/>
+								{!!album.imagesCount && <>
+									<FontAwesomeIcon icon={faPenToSquare} onClick={() => setIsEditMode(true)}/>
+									<FontAwesomeIcon icon={faTrashCan}/>
+								</>
+								}
+							</>
+							:
+							<>
+								<FontAwesomeIcon icon={faCircleCheck}
+								                 className={classes.Save}
+								                 onClick={() => setIsEditMode(false)}/>
+								<FontAwesomeIcon icon={faCircleXmark}
+								                 className={classes.Cancel}
+								                 onClick={() => setIsEditMode(false)}/>
+							</>
+						}
+					</div>
+				}
+			</header>
 			<div className={classes.ImageWrapper}>
 				{album.imagesCount ?
 					<img className="img-fluid"
@@ -56,9 +92,10 @@ const AlbumDetails = () => {
 			<FontAwesomeIcon className={`${classes.PreviousImageIcon} ${currentImageNumber <= 1 && 'disabled'}`}
 			                 icon={faChevronLeft}
 			                 onClick={goToPreviousImage}/>
-			<FontAwesomeIcon className={`${classes.NextImageIcon} ${currentImageNumber === album.imagesCount && 'disabled'}`}
-			                 icon={faChevronRight}
-			                 onClick={goToNextImage}/>
+			<FontAwesomeIcon
+				className={`${classes.NextImageIcon} ${(currentImageNumber === album.imagesCount || album.imagesCount === 0) && 'disabled'}`}
+				icon={faChevronRight}
+				onClick={goToNextImage}/>
 		</div>
 	</div>;
 };

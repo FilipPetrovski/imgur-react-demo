@@ -53,13 +53,13 @@ function App() {
 			<Navbar user={user}/>
 			<main>
 				<Routes>
-					<Route path='/' element={<Layout />}>
-						{!authCtx.isLoggedIn && <Route path={RoutesName.Login} element={<Login />} />}
-						{authCtx.isLoggedIn && <Route path={RoutesName.MyGallery} element={<MyGallery />} />}
-						{authCtx.isLoggedIn && <Route path={RoutesName.AddImages} element={<AddImages />} />}
-						<Route path={RoutesName.Hot} element={<Hot />} />
-						<Route path={RoutesName.Top} element={<Top />} />
-						<Route path={`${RoutesName.Album}/:albumId`} element={<AlbumDetails />} />
+					<Route path="/" element={<Layout/>}>
+						{!authCtx.isLoggedIn && <Route path={RoutesName.Login} element={<Login/>}/>}
+						{authCtx.isLoggedIn && <Route path={RoutesName.MyGallery} element={<MyGallery/>}/>}
+						{authCtx.isLoggedIn && <Route path={RoutesName.AddImages} element={<AddImages/>}/>}
+						<Route path={RoutesName.Hot} element={<Hot/>}/>
+						<Route path={RoutesName.Top} element={<Top/>}/>
+						<Route path={`:gallery/${RoutesName.Album}/:albumId`} element={<AlbumDetails/>}/>
 					</Route>
 				</Routes>
 			</main>

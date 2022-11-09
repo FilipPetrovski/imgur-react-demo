@@ -9,14 +9,42 @@
   border: 3px solid $primary-light;
   box-shadow: 0 50px 50px 0 rgba(16, 37, 114, 0.1);
 
-  .CurrentImageText {
-	color: $primary;
-	font-weight: bold;
+  .Header {
 	height: 24px;
 	margin: 16px 0;
 
-	span {
-	  margin-left: 8px;
+	.CurrentImageText {
+	  color: $primary;
+	  font-weight: bold;
+	  margin: 0;
+	  float: left;
+
+	  span {
+		margin-left: 8px;
+	  }
+	}
+
+	.Icons {
+	  float: right;
+
+	  svg {
+		width: 24px;
+		height: 24px;
+		cursor: pointer;
+		margin-left: 8px;
+
+		&.Save {
+		  color: $success;
+		  width: 32px;
+		  height: 32px;
+		}
+
+		&.Cancel {
+		  color: $danger;
+		  width: 32px;
+		  height: 32px;
+		}
+	  }
 	}
   }
 
