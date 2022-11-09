@@ -50,7 +50,7 @@ const AlbumDetails = () => {
 	};
 
 	return <div className="row">
-		<div className={`${classes.AlbumWrapper} col-xl-12 col-lg-12 col-md-12 col-8`}>
+		<div className={`${classes.AlbumWrapper} col-xl-12 col-lg-10 col-md-10 col-10`}>
 			<header className={classes.Header}>
 				{!!album.imagesCount &&
 					<p className={classes.CurrentImageText}>Current image:
@@ -58,29 +58,29 @@ const AlbumDetails = () => {
 					</p>
 				}
 				{isMyGallery && <div className={classes.Icons}>
-						{!isEditMode ?
-							<>
-								<FontAwesomeIcon icon={faPlus}/>
-								{!!album.imagesCount && <>
-									<FontAwesomeIcon icon={faPenToSquare} onClick={() => setIsEditMode(true)}/>
-									<FontAwesomeIcon icon={faTrashCan}/>
-								</>
-								}
+					{!isEditMode ?
+						<>
+							<FontAwesomeIcon icon={faPlus}/>
+							{!!album.imagesCount && <>
+								<FontAwesomeIcon icon={faPenToSquare} onClick={() => setIsEditMode(true)}/>
+								<FontAwesomeIcon icon={faTrashCan}/>
 							</>
-							:
-							<>
-								<FontAwesomeIcon icon={faCircleCheck}
-								                 className={classes.Save}
-								                 onClick={() => setIsEditMode(false)}/>
-								<FontAwesomeIcon icon={faCircleXmark}
-								                 className={classes.Cancel}
-								                 onClick={() => setIsEditMode(false)}/>
-							</>
-						}
-					</div>
+							}
+						</>
+						:
+						<>
+							<FontAwesomeIcon icon={faCircleCheck}
+							                 className={classes.Save}
+							                 onClick={() => setIsEditMode(false)}/>
+							<FontAwesomeIcon icon={faCircleXmark}
+							                 className={classes.Cancel}
+							                 onClick={() => setIsEditMode(false)}/>
+						</>
+					}
+				</div>
 				}
 			</header>
-			<div className={classes.ImageWrapper}>
+			<section className={classes.ImageWrapper}>
 				{album.imagesCount ?
 					<img className="img-fluid"
 					     src={album && album.images && album.images[currentImageNumber - 1].url}
@@ -88,14 +88,20 @@ const AlbumDetails = () => {
 					:
 					<img src={noImage} alt="no preview"/>
 				}
-			</div>
-			<FontAwesomeIcon className={`${classes.PreviousImageIcon} ${currentImageNumber <= 1 && 'disabled'}`}
-			                 icon={faChevronLeft}
-			                 onClick={goToPreviousImage}/>
-			<FontAwesomeIcon
-				className={`${classes.NextImageIcon} ${(currentImageNumber === album.imagesCount || album.imagesCount === 0) && 'disabled'}`}
-				icon={faChevronRight}
-				onClick={goToNextImage}/>
+				<div className={classes.ImageDescription}>
+					{album && album.images && album.images[currentImageNumber - 1] && album.images[currentImageNumber - 1].description}
+				</div>
+			</section>
+			<section className={classes.ImageTitleWrapper}>
+				<FontAwesomeIcon className={`${classes.PreviousImageIcon} ${currentImageNumber <= 1 && 'disabled'}`}
+				                 icon={faChevronLeft}
+				                 onClick={goToPreviousImage}/>
+				<p className={classes.ImageTitle}>{album && album.images && album.images[currentImageNumber - 1] && album.images[currentImageNumber - 1].title}</p>
+				<FontAwesomeIcon
+					className={`${classes.NextImageIcon} ${(currentImageNumber === album.imagesCount || album.imagesCount === 0) && 'disabled'}`}
+					icon={faChevronRight}
+					onClick={goToNextImage}/>
+			</section>
 		</div>
 	</div>;
 };
