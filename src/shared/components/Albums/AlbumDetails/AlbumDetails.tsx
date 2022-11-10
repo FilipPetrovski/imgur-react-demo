@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import httpClient from '../../../../interceptors/RequestInterceptor';
 import {useParams} from 'react-router';
 import {Album} from '../../../models/Album.model';
@@ -14,6 +14,7 @@ import {
 import {faCircleCheck, faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import noImage from '../../../../assets/images/No-Image-Placeholder.svg.png';
 import {RoutesName} from '../../../models/Routes';
+import LoadingContext from '../../../../stores/LoadingContext';
 
 const AlbumDetails = () => {
 	const [currentImageNumber, setCurrentImageNumber] = useState(1);
@@ -21,19 +22,25 @@ const AlbumDetails = () => {
 	const [album, setAlbum] = useState(new Album());
 	const {albumId, gallery} = useParams();
 	const isMyGallery = gallery === RoutesName.MyGallery;
+	const {setLoading} = useContext(LoadingContext);
 	let loadedOnce: boolean; // TODO this loadedOnce is fix for development so that the use effect wont run twice and send two request -> https://dev.to/ag-grid/react-18-avoiding-use-effect-getting-called-twice-4i9e
 	useEffect(() => {
 		if (!loadedOnce) {
+			setLoading(true);
 			httpClient.get(`https://api.imgur.com/3/album/${albumId}`).then(
 				(data) => {
 					setAlbum(Album.deserialize(data.data.data));
+					setLoading(false);
 				}
-			);
+			).catch((error: Error) => {
+				console.log(error);
+				setLoading(false);
+			});
 		}
 		return () => {
 			loadedOnce = true;
 		};
-	}, []);
+	}, [setLoading]);
 
 	const goToNextImage = () => {
 		// @ts-ignore

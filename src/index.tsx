@@ -8,6 +8,7 @@ import {AuthContextProvider} from './stores/AuthContext';
 import {Provider} from 'react-redux';
 import globalStore from './stores/globalStore';
 import {BrowserRouter} from 'react-router-dom';
+import {LoadingContextProvider} from './stores/LoadingContext';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
@@ -17,7 +18,9 @@ root.render(
 		<BrowserRouter>
 			<Provider store={globalStore}>
 				<AuthContextProvider>
-					<App/>
+					<LoadingContextProvider>
+						<App/>
+					</LoadingContextProvider>
 				</AuthContextProvider>
 			</Provider>
 		</BrowserRouter>
