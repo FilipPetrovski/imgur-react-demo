@@ -22,7 +22,6 @@ const AlbumDetails = () => {
 	const {albumId, gallery} = useParams();
 	const isMyGallery = gallery === RoutesName.MyGallery;
 	let loadedOnce: boolean; // TODO this loadedOnce is fix for development so that the use effect wont run twice and send two request -> https://dev.to/ag-grid/react-18-avoiding-use-effect-getting-called-twice-4i9e
-
 	useEffect(() => {
 		if (!loadedOnce) {
 			httpClient.get(`https://api.imgur.com/3/album/${albumId}`).then(
@@ -88,9 +87,10 @@ const AlbumDetails = () => {
 					:
 					<img src={noImage} alt="no preview"/>
 				}
-				<div className={classes.ImageDescription}>
-					{album && album.images && album.images[currentImageNumber - 1] && album.images[currentImageNumber - 1].description}
-				</div>
+				{!!album.imagesCount && album && album.images && album.images[currentImageNumber - 1] &&
+					album.images[currentImageNumber - 1].description && <div className={classes.ImageDescription}>
+					{album.images[currentImageNumber - 1].description}
+				</div>}
 			</section>
 			<section className={classes.ImageTitleWrapper}>
 				<FontAwesomeIcon className={`${classes.PreviousImageIcon} ${currentImageNumber <= 1 && 'disabled'}`}
