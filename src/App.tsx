@@ -13,9 +13,9 @@ import Layout from './components/Layout/Layout';
 import {RoutesName} from './shared/models/Routes';
 import {User} from './components/Navbar/models/User.model';
 import MyGallery from './components/MyGallery/MyGallery';
-import AddImages from './components/AddImages/AddImages';
 import Loading from './components/Loading/Loading';
 import LoadingContext from './stores/LoadingContext';
+import AddImages from './components/MyGallery/AddImages/AddImages';
 
 export const USER_KEY = 'user';
 
@@ -67,6 +67,7 @@ function App() {
 						{!authCtx.isLoggedIn && <Route path={RoutesName.Login} element={<Login/>}/>}
 						{authCtx.isLoggedIn && <Route path={RoutesName.MyGallery} element={<MyGallery/>}/>}
 						{authCtx.isLoggedIn && <Route path={RoutesName.AddImages} element={<AddImages/>}/>}
+						{authCtx.isLoggedIn && <Route path={`${RoutesName.AddImages}/${RoutesName.Album}/:albumId`} element={<AddImages/>}/>}
 						<Route path={RoutesName.Hot} element={<Hot/>}/>
 						<Route path={RoutesName.Top} element={<Top/>}/>
 						<Route path={`:gallery/${RoutesName.Album}/:albumId`} element={<AlbumDetails/>}/>

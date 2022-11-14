@@ -1,0 +1,45 @@
+@import '../../../assets/styles/Colors.module';
+
+.AddImagesWrapper {
+  .DragAndDropArea {
+	width: 50%;
+	margin: 32px auto;
+  }
+
+  .AddImagesFormWrapper {
+	border: 2px solid $primary;
+	border-radius: 10px;
+	width: 80%;
+	min-height: 100px;
+	height: 200px;
+
+	label {
+	  color: $grey;
+	  cursor: pointer;
+	}
+
+	.AlbumNameAndButtonWrapper {
+	  margin-top: 8px;
+
+	  p {
+		color: $black;
+		font-weight: 600;
+		display: inline-block;
+		text-align: center;
+		margin-bottom: 0;
+	  }
+
+	  select {
+		cursor: pointer;
+	  }
+
+	  button {
+		color: $white;
+		background-color: $primary;
+		border: 1px solid $primary-lighter;
+		border-radius: 5px;
+		padding: 4px;
+	  }
+	}
+  }
+}
