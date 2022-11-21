@@ -10,8 +10,7 @@
 	border: 2px solid $primary;
 	border-radius: 10px;
 	width: 80%;
-	min-height: 100px;
-	height: 200px;
+	height: 400px;
 
 	label {
 	  color: $grey;
@@ -31,6 +30,15 @@
 
 	  select {
 		cursor: pointer;
+		border-radius: 4px;
+		border: 1px solid $primary;
+		padding: 5px;
+	  }
+
+	  .AlbumName {
+		border-radius: 4px;
+		border: 1px solid $primary;
+		padding: 5px;
 	  }
 
 	  button {

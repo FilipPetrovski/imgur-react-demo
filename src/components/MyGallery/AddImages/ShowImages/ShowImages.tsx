@@ -1,11 +1,13 @@
 import ShowImage from './ShowImage/ShowImage';
+import {NewlyAddedImage} from '../models/NewlyAddedImage.model';
 
-// @ts-ignore
-const ShowImages = ({images}) => {
+const ShowImages = (props: {images: Array<NewlyAddedImage>, removeImage: Function}) => {
+
 	const show = (image: any) => {
-		console.log(image);
-		return <ShowImage image={image} key={image.id}/>;
+		return <ShowImage image={image}
+		                  key={image.id}
+		                  removeImage={() => props.removeImage(image.id)}/>;
 	};
-	return <div className="container">{images.map(show)}</div>;
+	return <div className="container">{props.images.map(show)}</div>;
 };
 export default ShowImages;
