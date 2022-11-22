@@ -1,3 +1,3 @@
-export const NumberOfWords = (text: string): number => {
+export const CountWords = (text: string): number => {
 	return text.trim().split(' ').length;
 }

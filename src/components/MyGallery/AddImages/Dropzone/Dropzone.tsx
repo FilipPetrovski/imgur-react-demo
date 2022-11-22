@@ -2,7 +2,7 @@ import {useDropzone} from 'react-dropzone';
 import classes from './Dropzone.module.scss';
 import {useMemo} from 'react';
 
-export const MAX_FILE_SIZE = 1024 * 1024 * 25; // File size is in bytes, so this means the max file size should be 25MB
+export const MAX_FILE_SIZE = 1024 * 1024 * 10; // File size is in bytes, so this means the max file size should be 10MB
 
 // @ts-ignore
 const DropBox = ({onDrop}) => {

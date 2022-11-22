@@ -15,12 +15,14 @@ import {faCircleCheck, faCircleXmark} from '@fortawesome/free-regular-svg-icons'
 import noImage from '../../../../assets/images/No-Image-Placeholder.svg.png';
 import {RoutesName} from '../../../models/Routes';
 import LoadingContext from '../../../../stores/LoadingContext';
+import {useNavigate} from 'react-router-dom';
 
 const AlbumDetails = () => {
 	const [currentImageNumber, setCurrentImageNumber] = useState(1);
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [album, setAlbum] = useState(new Album());
 	const {albumId, gallery} = useParams();
+	const navigate = useNavigate();
 	const isMyGallery = gallery === RoutesName.MyGallery;
 	const {setLoading} = useContext(LoadingContext);
 	let loadedOnce: boolean; // TODO this loadedOnce is fix for development so that the use effect wont run twice and send two request -> https://dev.to/ag-grid/react-18-avoiding-use-effect-getting-called-twice-4i9e
@@ -55,6 +57,10 @@ const AlbumDetails = () => {
 		}
 	};
 
+	const navigateToAddImages = () => {
+		navigate(`/${RoutesName.AddImages}/${albumId}`);
+	}
+
 	return <div className="row">
 		<div className={`${classes.AlbumWrapper} col-xl-12 col-lg-10 col-md-10 col-10`}>
 			<header className={classes.Header}>
@@ -66,7 +72,7 @@ const AlbumDetails = () => {
 				{isMyGallery && <div className={classes.Icons}>
 					{!isEditMode ?
 						<>
-							<FontAwesomeIcon icon={faPlus}/>
+							<FontAwesomeIcon icon={faPlus} onClick={navigateToAddImages}/>
 							{!!album.imagesCount && <>
 								<FontAwesomeIcon icon={faPenToSquare} onClick={() => setIsEditMode(true)}/>
 								<FontAwesomeIcon icon={faTrashCan}/>

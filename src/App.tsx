@@ -67,7 +67,7 @@ function App() {
 						{!authCtx.isLoggedIn && <Route path={RoutesName.Login} element={<Login/>}/>}
 						{authCtx.isLoggedIn && <Route path={RoutesName.MyGallery} element={<MyGallery/>}/>}
 						{authCtx.isLoggedIn && <Route path={RoutesName.AddImages} element={<AddImages/>}/>}
-						{authCtx.isLoggedIn && <Route path={`${RoutesName.AddImages}/${RoutesName.Album}/:albumId`} element={<AddImages/>}/>}
+						{authCtx.isLoggedIn && <Route path={`${RoutesName.AddImages}/:albumId`} element={<AddImages/>}/>}
 						<Route path={RoutesName.Hot} element={<Hot/>}/>
 						<Route path={RoutesName.Top} element={<Top/>}/>
 						<Route path={`:gallery/${RoutesName.Album}/:albumId`} element={<AlbumDetails/>}/>
