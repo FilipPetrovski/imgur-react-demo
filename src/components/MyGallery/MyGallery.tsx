@@ -12,6 +12,7 @@ const MyGallery = () => {
 	const albums: Array<Album> = useSelector((state: RootState) => state.albums);
 	const dispatch = useDispatch();
 	const {setLoading} = useContext(LoadingContext);
+
 	useEffect(() => {
 		setLoading(true);
 		httpClient.get(`https://api.imgur.com/3/account/me/albums`).then(
@@ -19,11 +20,12 @@ const MyGallery = () => {
 				dispatch(setAlbums(data.data.data.map((album: any) => Album.deserialize(album))));
 				setLoading(false);
 			}
-		).catch((erorr: Error) => {
-			console.log(erorr);
+		).catch((error: Error) => {
+			console.log(error);
 			setLoading(false);
 		});
 	}, [dispatch, setLoading]);
+
 	return <>
 		<h1 className={classes.Title}>MY GALLERY</h1>
 		<Albums albums={albums}/>

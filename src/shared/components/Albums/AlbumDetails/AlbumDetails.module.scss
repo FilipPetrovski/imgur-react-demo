@@ -26,6 +26,11 @@
 	.Icons {
 	  float: right;
 
+	  button {
+		border: none;
+		padding: 0;
+	  }
+
 	  svg {
 		width: 24px;
 		height: 24px;
@@ -88,6 +93,12 @@
 		overflow: auto;
 		white-space: normal;
 	  }
+	}
+
+	.ImageTitleInput {
+	  border: none;
+	  border-bottom: 2px $hr-color solid;
+	  width: 250px;
 	}
 
 	.PreviousImageIcon, .NextImageIcon {
