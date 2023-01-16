@@ -1,0 +1,65 @@
+@import '../../../assets/styles/Colors.module';
+
+.modalContainer {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  .modalPanel {
+	background-color: $background;
+	border: 2px solid $primary;
+	border-radius: 10px;
+	z-index: 999;
+	max-width: 100vw;
+	margin: auto;
+	padding: 1em 2em 2em;
+	position: relative;
+	width: 400px;
+	min-height: 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+
+	.modalText {
+	  font-size: 16px;
+	  font-weight: 600;
+	}
+
+	.buttonsWrapper {
+	  button {
+		width: 100px;
+		font-weight: 600;
+		border-radius: 5px;
+
+		&.leftButton {
+		  margin-right: 10px;
+		  background-color: $primary-light;
+		  color: $white;
+		  border: 1px solid $primary;
+		}
+
+		&.rightButton {
+		  margin-left: 10px;
+		  background-color: $danger;
+		  color: $white;
+		  border: 1px solid $grey;
+		}
+	  }
+	}
+  }
+
+  .modalOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99;
+	background-color: $black;
+	opacity: 0.75;
+  }
+}

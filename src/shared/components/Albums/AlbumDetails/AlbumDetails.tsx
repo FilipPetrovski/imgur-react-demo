@@ -17,12 +17,15 @@ import {RoutesName} from '../../../models/Routes';
 import LoadingContext from '../../../../stores/LoadingContext';
 import {useNavigate} from 'react-router-dom';
 import {Image} from '../../../models/Image.model';
+import useModal from '../../../hooks/UseModal';
+import ConfirmationModal from '../../Modal/ConfirmationModal';
 
 const AlbumDetails = () => {
 	const [currentImageNumber, setCurrentImageNumber] = useState(1);
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [album, setAlbum] = useState(new Album());
 	const {albumId, gallery} = useParams();
+	const {visible, toggle} = useModal();
 	const navigate = useNavigate();
 	const isMyGallery = gallery === RoutesName.MyGallery;
 	const {setLoading} = useContext(LoadingContext);
@@ -63,6 +66,7 @@ const AlbumDetails = () => {
 	};
 
 	const saveImageUpdates = (event: BaseSyntheticEvent) => {
+		setLoading(true);
 		event.preventDefault();
 		const description = event.target.description.value;
 		const title = event.target.title.value;
@@ -81,8 +85,28 @@ const AlbumDetails = () => {
 		);
 	};
 
+	const deletePhoto = () => {
+		setLoading(true);
+		httpClient.delete(`https://api.imgur.com/3/image/${album.images[currentImageNumber - 1].id}`).then(() => {
+			const filteredImages: Array<Image> = album.images.filter((image: Image) => image.id !== album.images[currentImageNumber - 1].id);
+			const updatedAlbum: Album = new Album({...album, images: filteredImages, imagesCount: album.imagesCount - 1});
+			if (currentImageNumber === album.imagesCount) {
+				setCurrentImageNumber(currentImageNumber - 1);
+			}
+			setAlbum(updatedAlbum);
+			setLoading(false);
+			}
+		);
+	};
+
 	return <div className="row">
 		<div className={`${classes.AlbumWrapper} col-xl-12 col-lg-10 col-md-10 col-10`}>
+			<ConfirmationModal visible={visible}
+			                   toggle={toggle}
+			                   onLeftButtonClick={() => {
+			                   }}
+			                   onRightButtonClick={() => deletePhoto()}
+			                   text="Are you sure you want to delete this photo?"></ConfirmationModal>
 			<form onSubmit={saveImageUpdates}>
 				<header className={classes.Header}>
 					{!!album.imagesCount &&
@@ -96,7 +120,7 @@ const AlbumDetails = () => {
 								<FontAwesomeIcon icon={faPlus} onClick={navigateToAddImages}/>
 								{!!album.imagesCount && <>
 									<FontAwesomeIcon icon={faPenToSquare} onClick={() => setIsEditMode(true)}/>
-									<FontAwesomeIcon icon={faTrashCan}/>
+									<FontAwesomeIcon icon={faTrashCan} onClick={toggle}/>
 								</>
 								}
 							</>
