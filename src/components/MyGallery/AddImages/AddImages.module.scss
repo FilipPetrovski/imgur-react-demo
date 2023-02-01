@@ -20,33 +20,43 @@
 	.AlbumNameAndButtonWrapper {
 	  margin-top: 8px;
 
-	  p {
-		color: $black;
-		font-weight: 600;
-		display: inline-block;
-		text-align: center;
-		margin-bottom: 0;
-	  }
+	  .AlbumActionsRow {
+		display: flex;
+		align-items: center;
 
-	  select {
-		cursor: pointer;
-		border-radius: 4px;
-		border: 1px solid $primary;
-		padding: 5px;
-	  }
+		@media screen and (max-width: 1000px) {
+		  flex-direction: column;
+		}
 
-	  .AlbumName {
-		border-radius: 4px;
-		border: 1px solid $primary;
-		padding: 5px;
-	  }
+		p {
+		  color: $black;
+		  font-weight: 600;
+		  display: inline-block;
+		  text-align: center;
+		  margin-bottom: 0;
+		  line-height: 18px;
+		}
 
-	  button {
-		color: $white;
-		background-color: $primary;
-		border: 1px solid $primary-lighter;
-		border-radius: 5px;
-		padding: 4px;
+		select {
+		  cursor: pointer;
+		  border-radius: 4px;
+		  border: 1px solid $primary;
+		  padding: 5px;
+		}
+
+		.AlbumName {
+		  border-radius: 4px;
+		  border: 1px solid $primary;
+		  padding: 5px;
+		}
+
+		button {
+		  color: $white;
+		  background-color: $primary;
+		  border: 1px solid $primary-lighter;
+		  border-radius: 5px;
+		  padding: 4px;
+		}
 	  }
 	}
   }

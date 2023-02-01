@@ -10,6 +10,12 @@
 
   &.FullNavbar {
 	width: 240px;
+
+	@media screen and (max-width: 800px) {
+	  position: absolute;
+	  width: 100%;
+	  z-index: 100;
+	}
   }
 
   .NavbarItems {

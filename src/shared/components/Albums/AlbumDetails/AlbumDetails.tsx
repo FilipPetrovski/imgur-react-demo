@@ -81,6 +81,7 @@ const AlbumDetails = () => {
 				};
 				album.images[currentImageNumber - 1] = updatedImage;
 				setIsEditMode(false);
+				setLoading(false);
 			}
 		);
 	};
