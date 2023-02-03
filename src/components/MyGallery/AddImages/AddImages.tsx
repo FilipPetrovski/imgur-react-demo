@@ -125,25 +125,25 @@ const AddImages = () => {
 			<DropBox onDrop={onDrop}/>
 		</section>
 		<main className={`${classes.AddImagesFormWrapper} row`}>
-			<form className="col-xl-12 col-lg-12 col-md-12 col-12" onSubmit={uploadImages}>
+			<form onSubmit={uploadImages}>
 				<section className={classes.AlbumNameAndButtonWrapper}>
-					<label htmlFor="album" className="col-xl-12 col-lg-12 offset-lg-0 col-md-10 offset-md-1 col-12">Select an album</label>
+					<label htmlFor="album" className="col-xl-12 col-lg-12 offset-lg-0 col-md-12 col-12">Select an album</label>
 					<div className={classes.AlbumActionsRow}>
 						<select id="album"
 						        value={selectedAlbumId}
-						        className="col-xl-2 col-lg-3 offset-lg-0 col-md-10 offset-md-1 col-12"
+						        className="col-xl-2 col-lg-3 offset-lg-0 col-md-12 col-12"
 						        onChange={(event) => setSelectedAlbumId(event.currentTarget.value)}>
 							{albums.map((album: Album) => {
 								return <option key={album.id} value={album.id}>{album.title}</option>;
 							})}
 						</select>
 
-						<p className="col-xl-2 col-lg-2 offset-lg-0 col-md-10 offset-md-1 col-12">Or Create New Album</p>
+						<p className="col-xl-2 col-lg-2 offset-lg-0 col-md-12 col-12">Or Create New Album</p>
 						<input type="text"
 						       placeholder="Album name"
-						       className={`col-xl-2 col-lg-3 offset-lg-0 col-md-10 offset-md-1 col-12 ${classes.AlbumName}`}/>
+						       className={`col-xl-2 col-lg-3 offset-lg-0 col-md-12 col-12 ${classes.AlbumName}`}/>
 						<button type="submit"
-						        className={`col-xl-2 offset-xl-4 col-lg-2 offset-lg-2 col-md-10 offset-md-1 col-12 
+						        className={`col-xl-2 offset-xl-4 col-lg-2 offset-lg-2 col-md-12 col-12 
 					        ${(images.length < 1 || !checkFormValidity()) && 'disabled'}`}>
 							UPLOAD
 						</button>

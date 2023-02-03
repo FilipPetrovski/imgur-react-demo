@@ -10,31 +10,17 @@ import {
 	faPhotoFilm,
 	faPlus
 } from '@fortawesome/free-solid-svg-icons';
-import {BaseSyntheticEvent, useContext, useEffect, useState} from 'react';
+import {BaseSyntheticEvent, useContext, useState} from 'react';
 import AuthContext from '../../stores/AuthContext';
 import {Link} from 'react-router-dom';
 import {RoutesName} from '../../shared/models/Routes';
 import {User} from './models/User.model';
+import useDeviceScreenSize from '../../shared/hooks/UseDeviceScreenSize';
 
 const Navbar = (props: { user: User }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
 	const authCtx = useContext(AuthContext);
-	const [windowSize, setWindowSize] = useState([
-		window.innerWidth,
-		window.innerHeight,
-	]);
-
-	useEffect(() => {
-		const handleWindowResize = () => {
-			setWindowSize([window.innerWidth, window.innerHeight]);
-		};
-
-		window.addEventListener('resize', handleWindowResize);
-
-		return () => {
-			window.removeEventListener('resize', handleWindowResize);
-		};
-	}, []);
+	const {deviceScreenWidth} = useDeviceScreenSize();
 
 	const addActiveClassHandler = (element: BaseSyntheticEvent) => {
 		element.currentTarget.classList.add(classes.Active);
@@ -50,15 +36,11 @@ const Navbar = (props: { user: User }) => {
 		});
 	};
 
-	const isTabletOrSmallerDevice = () => {
-		return windowSize[0] <= 800;
-	};
-
 	const closeMenuIfSmallDevice = () => {
-		if (isMenuOpen && isTabletOrSmallerDevice()) {
+		if (isMenuOpen && deviceScreenWidth <= 800) {
 			setIsMenuOpen(false);
 		}
-	}
+	};
 
 	const navbarContent = (<ul className={classes.NavbarItems}>
 		<div className={classes.HamburgerMenu}>
