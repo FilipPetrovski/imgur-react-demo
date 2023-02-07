@@ -1,0 +1,24 @@
+@import "../../../assets/styles/Colors.module";
+
+.PercentageContainer {
+  height: 40px;
+  width: 100%;
+  background-color: $white;
+  border-radius: 5px;
+  margin-top: 8px;
+
+  .FillBar {
+	background-color: $success;
+	border-radius: inherit;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  }
+
+  .Label {
+	padding: 5px;
+	color: $white;
+	font-weight: 600;
+  }
+}
