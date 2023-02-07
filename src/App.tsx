@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Login from './components/Login/Login';
 import classes from './App.module.scss';
-import httpClient from './interceptors/RequestInterceptor';
 import AuthContext from './stores/AuthContext';
 import Top from './components/Top/Top';
 import Hot from './components/Hot/Hot';
@@ -16,6 +15,9 @@ import MyGallery from './components/MyGallery/MyGallery';
 import Loading from './components/Loading/Loading';
 import LoadingContext from './stores/LoadingContext';
 import AddImages from './components/MyGallery/AddImages/AddImages';
+import {toast, ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import httpClient from './interceptors/Interceptor';
 
 export const USER_KEY = 'user';
 
@@ -33,18 +35,17 @@ function App() {
 			loadingCtx.setLoading(true);
 			const accessToken = loginParams[0].slice(loginParams[0].indexOf('=') + 1, loginParams[0].length);
 			const userName = loginParams[4].slice(loginParams[4].indexOf('=') + 1, loginParams[4].length);
-			navigate('/');
+			navigate(RoutesName.MyGallery);
 			authCtx.onLogin(accessToken);
 			httpClient.get(`https://api.imgur.com/3/account/${userName}/authorize?client_id=${process.env.REACT_APP_IMGUR_CLIENT_ID}`).then(
 				(response) => {
 					const newUser = new User({avatar: response.data.data.avatar, name: userName});
 					setUser(newUser);
 					window.localStorage.setItem(USER_KEY, JSON.stringify(newUser));
+					toast.success('Login successful');
 					loadingCtx.setLoading(false);
 				}
 			).catch((error: Error) => {
-				// TODO handle errors
-				console.log(error);
 				loadingCtx.setLoading(false);
 			});
 		}
@@ -62,6 +63,7 @@ function App() {
 			{loadingCtx.isLoading && <Loading />}
 			<Navbar user={user}/>
 			<main>
+				<ToastContainer autoClose={5000} closeOnClick={true} position={'top-right'} />
 				<Routes>
 					<Route path="/" element={<Layout/>}>
 						{!authCtx.isLoggedIn && <Route path={RoutesName.Login} element={<Login/>}/>}

@@ -1,12 +1,12 @@
 import classes from '../Hot/Hot.module.scss';
 import {useContext, useEffect} from 'react';
-import httpClient from '../../interceptors/RequestInterceptor';
 import {Album} from '../../shared/models/Album.model';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../stores/globalStore';
 import {setAlbums} from '../../stores/albumsSlice';
 import Albums from '../../shared/components/Albums/Albums';
 import LoadingContext from '../../stores/LoadingContext';
+import httpClient from '../../interceptors/Interceptor';
 
 const Hot = () => {
 	const albums: Array<Album> = useSelector((state: RootState) => state.albums);
@@ -21,7 +21,6 @@ const Hot = () => {
 				setLoading(false);
 			}
 		).catch((error: Error) => {
-			console.log(error);
 			setLoading(false);
 		})
 	}, [dispatch, setLoading]);

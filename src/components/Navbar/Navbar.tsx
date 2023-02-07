@@ -2,13 +2,13 @@ import classes from '../Navbar/Navbar.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
 	faArrowRightToBracket,
+	faBars,
 	faFireFlameCurved,
+	faPhotoFilm,
+	faPlus,
 	faRightFromBracket,
 	faStar,
-	faUserCircle,
-	faBars,
-	faPhotoFilm,
-	faPlus
+	faUserCircle
 } from '@fortawesome/free-solid-svg-icons';
 import {BaseSyntheticEvent, useContext, useState} from 'react';
 import AuthContext from '../../stores/AuthContext';
@@ -77,7 +77,7 @@ const Navbar = (props: { user: User }) => {
 				{isMenuOpen && <span>Add New Image</span>}
 			</li>
 		</Link>}
-		<Link to={RoutesName.Hot} className={classes.Link}>
+		<Link to={authCtx.isLoggedIn ? RoutesName.Hot : RoutesName.Login} className={classes.Link}>
 			<li className={classes.Item}
 			    onMouseOver={addActiveClassHandler}
 			    onMouseOut={removeActiveClassHandler}
@@ -86,7 +86,7 @@ const Navbar = (props: { user: User }) => {
 				{isMenuOpen && <span>Hot</span>}
 			</li>
 		</Link>
-		<Link to={RoutesName.Top} className={classes.Link}>
+		<Link to={authCtx.isLoggedIn ? RoutesName.Top : RoutesName.Login} className={classes.Link}>
 			<li className={classes.Item}
 			    onMouseOver={addActiveClassHandler}
 			    onMouseOut={removeActiveClassHandler}

@@ -1,5 +1,4 @@
 import React, {BaseSyntheticEvent, useContext, useEffect, useState} from 'react';
-import httpClient from '../../../../interceptors/RequestInterceptor';
 import {useParams} from 'react-router';
 import {Album} from '../../../models/Album.model';
 import classes from './AlbumDetails.module.scss';
@@ -19,6 +18,9 @@ import {useNavigate} from 'react-router-dom';
 import {Image} from '../../../models/Image.model';
 import useModal from '../../../hooks/UseModal';
 import ConfirmationModal from '../../Modal/ConfirmationModal';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import httpClient from '../../../../interceptors/Interceptor';
 
 const AlbumDetails = () => {
 	const [currentImageNumber, setCurrentImageNumber] = useState(1);
@@ -40,7 +42,6 @@ const AlbumDetails = () => {
 					setLoading(false);
 				}
 			).catch((error: Error) => {
-				console.log(error);
 				setLoading(false);
 			});
 		}
@@ -80,7 +81,11 @@ const AlbumDetails = () => {
 					description: description
 				};
 				album.images[currentImageNumber - 1] = updatedImage;
+				toast.success('Image has been updated');
 				setIsEditMode(false);
+				setLoading(false);
+			}
+		).catch((error: Error) => {
 				setLoading(false);
 			}
 		);
@@ -88,14 +93,19 @@ const AlbumDetails = () => {
 
 	const deletePhoto = () => {
 		setLoading(true);
-		httpClient.delete(`https://api.imgur.com/3/image/${album.images[currentImageNumber - 1].id}`).then(() => {
-			const filteredImages: Array<Image> = album.images.filter((image: Image) => image.id !== album.images[currentImageNumber - 1].id);
-			const updatedAlbum: Album = new Album({...album, images: filteredImages, imagesCount: album.imagesCount - 1});
-			if (currentImageNumber === album.imagesCount) {
-				setCurrentImageNumber(currentImageNumber - 1);
+		httpClient.delete(`https://api.imgur.com/3/image/${album.images[currentImageNumber - 1].id}`)
+			.then(() => {
+				const filteredImages: Array<Image> = album.images.filter((image: Image) => image.id !== album.images[currentImageNumber - 1].id);
+				const updatedAlbum: Album = new Album({...album, images: filteredImages, imagesCount: album.imagesCount - 1});
+				if (currentImageNumber === album.imagesCount) {
+					setCurrentImageNumber(currentImageNumber - 1);
+				}
+				toast.success('Image has been deleted');
+				setAlbum(updatedAlbum);
+				setLoading(false);
 			}
-			setAlbum(updatedAlbum);
-			setLoading(false);
+		).catch((error: Error) => {
+				setLoading(false);
 			}
 		);
 	};

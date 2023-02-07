@@ -9,10 +9,12 @@ import {Album} from '../../../shared/models/Album.model';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../stores/globalStore';
 import LoadingContext from '../../../stores/LoadingContext';
-import httpClient from '../../../interceptors/RequestInterceptor';
 import {setAlbums} from '../../../stores/albumsSlice';
 import {ConvertToBase64ForUpload} from '../../../utils/ConvertToBase64ForUpload';
 import ProgressBar from '../../../shared/components/ProgressBar/ProgressBar';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import httpClient from '../../../interceptors/Interceptor';
 
 const AddImages = () => {
 	const {setLoading} = useContext(LoadingContext);
@@ -20,7 +22,7 @@ const AddImages = () => {
 	const {albumId} = useParams();
 	const [selectedAlbumId, setSelectedAlbumId] = useState('');
 	const [newAlbumName, setNewAlbumName] = useState<string>('');
-	const [progressPercentage, setProgressPercentage] = useState<number>(100);
+	const [progressPercentage, setProgressPercentage] = useState<number>(0);
 	const [images, setImages] = useState<Array<NewlyAddedImage>>([]);
 	const albums: Array<Album> = useSelector((state: RootState) => state.albums);
 	let albumsLoaded = false;
@@ -39,6 +41,8 @@ const AddImages = () => {
 			setLoading(false);
 			setImages([]);
 			setNewAlbumName('');
+			setProgressPercentage(0);
+			toast.success('Images have been uploaded successfully');
 		}
 	}, [progressPercentage, setLoading]);
 
@@ -50,8 +54,7 @@ const AddImages = () => {
 				albumsLoaded = true;
 				setLoading(false);
 			}
-		).catch((erorr: Error) => {
-			console.log(erorr);
+		).catch((error: Error) => {
 			setLoading(false);
 		});
 	}, [dispatch, setLoading]);
@@ -110,10 +113,10 @@ const AddImages = () => {
 				title: newAlbumName,
 			}).then(
 				(data) => {
+					toast.success('Album has been created !');
 					uploadImagesToAlbum(data.data.data.id);
 				}
-			).catch((erorr: Error) => {
-				console.log(erorr);
+			).catch((error: Error) => {
 				setLoading(false);
 			});
 		} else {
@@ -141,8 +144,7 @@ const AddImages = () => {
 			}, config).then(
 				(data) => {
 				}
-			).catch((erorr: Error) => {
-				console.log(erorr);
+			).catch((error: Error) => {
 				setLoading(false);
 			});
 		});
@@ -187,7 +189,7 @@ const AddImages = () => {
 						</button>
 					</div>
 				</section>
-				{progressPercentage < 100 && <ProgressBar percentage={progressPercentage}/>}
+				{progressPercentage !== 0 && <ProgressBar percentage={progressPercentage}/>}
 				<ShowImages images={images}
 				            changeImageTitle={(imageId: string, title: string) => changeImageTitle(imageId, title)}
 				            changeImageDescription={(imageId: string, description: string) => changeImageDescription(imageId, description)}

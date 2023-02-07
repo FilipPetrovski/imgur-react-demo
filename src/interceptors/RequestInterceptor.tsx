@@ -1,5 +1,5 @@
-import axios, {AxiosInstance} from 'axios';
 import {TOKEN_KEY} from '../stores/AuthContext';
+import {AxiosInstance} from 'axios';
 
 const requestInterceptor = (axiosInstance: AxiosInstance) => {
 	axiosInstance.interceptors.request.use(config => {
@@ -13,15 +13,10 @@ const requestInterceptor = (axiosInstance: AxiosInstance) => {
 			config.headers['Content-Type'] = 'application/json';
 			return config;
 		},
-		error => {
+		(error) => {
 			Promise.reject(error);
 		}
 	);
 };
 
-const httpClient = axios.create({
-	baseURL: process.env.REACT_APP_API_URL
-});
-requestInterceptor(httpClient);
-
-export default httpClient;
+export default requestInterceptor;
