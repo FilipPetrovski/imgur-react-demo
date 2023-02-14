@@ -33,6 +33,9 @@ const Albums = (props: { albums: Album[] }) => {
 					<div className={classes.ImageWrapper}>
 						<img className="img-fluid"
 							// TODO Replace the src with the actual album cover image
+							// TODO Add infinite scroll and fetch 18 albums at a time
+							// TODO Add Gif/video playing possibility and functionality
+							// TODO Add No found page
 							 src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
 							 alt={album.getCoverImage()?.description}/>
 					</div>

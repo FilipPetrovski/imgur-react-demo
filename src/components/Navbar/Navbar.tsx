@@ -10,14 +10,19 @@ import {
 	faStar,
 	faUserCircle
 } from '@fortawesome/free-solid-svg-icons';
-import {BaseSyntheticEvent, useContext, useState} from 'react';
+import React, {BaseSyntheticEvent, useContext, useState} from 'react';
 import AuthContext from '../../stores/AuthContext';
 import {Link} from 'react-router-dom';
 import {RoutesName} from '../../shared/models/Routes';
 import {User} from './models/User.model';
 import useDeviceScreenSize from '../../shared/hooks/UseDeviceScreenSize';
 
-const Navbar = (props: { user: User }) => {
+type Props = {
+	user: User;
+	logoutClick: Function;
+}
+
+const Navbar: React.FC<Props> = (props: Props) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
 	const authCtx = useContext(AuthContext);
 	const {deviceScreenWidth} = useDeviceScreenSize();
@@ -41,6 +46,12 @@ const Navbar = (props: { user: User }) => {
 			setIsMenuOpen(false);
 		}
 	};
+
+	const onLogout = () => {
+		closeMenuIfSmallDevice();
+		props.logoutClick();
+		authCtx.onLogout();
+	}
 
 	const navbarContent = (<ul className={classes.NavbarItems}>
 		<div className={classes.HamburgerMenu}>
@@ -99,18 +110,17 @@ const Navbar = (props: { user: User }) => {
 			{authCtx.isLoggedIn && <li className={`${classes.Item} ${classes.SignOut}`}
 			                           onMouseOver={addActiveClassHandler}
 			                           onMouseOut={removeActiveClassHandler}
-			                           onClick={closeMenuIfSmallDevice && authCtx.onLogout}>
+			                           onClick={onLogout}>
 				<FontAwesomeIcon icon={faRightFromBracket}/>
 				{isMenuOpen && <span>Sign Out</span>}
 			</li>}
 			<li className={`${classes.Item} ${classes.UserWrapper}`}>
 				{
-					// TODO add the user avatar here
 					authCtx.isLoggedIn ? <img className={classes.Avatar}
-					                          src="https://imgur.com/user/filippetrovski1992/avatar?maxwidth=290"
+					                          src={props.user?.avatar}
 					                          alt="user-avatar"/> :
 						<FontAwesomeIcon icon={faUserCircle}/>}
-				{isMenuOpen && <span>{props.user.name || 'Username'}</span>}
+				{isMenuOpen && <span>{props.user?.name || 'Username'}</span>}
 			</li>
 		</div>
 	</ul>);

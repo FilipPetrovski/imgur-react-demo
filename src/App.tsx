@@ -61,9 +61,9 @@ function App() {
 	return (
 		<div className={`${classes.AppContainer} ${loadingCtx.isLoading && 'pointer-events-none'}`}>
 			{loadingCtx.isLoading && <Loading />}
-			<Navbar user={user}/>
+			<Navbar user={user} logoutClick={() => setUser(null)}/>
 			<main>
-				<ToastContainer autoClose={5000} closeOnClick={true} position={'top-right'} />
+				<ToastContainer autoClose={5000} closeOnClick={true} pauseOnHover={false} position={'top-right'} />
 				<Routes>
 					<Route path="/" element={<Layout/>}>
 						{!authCtx.isLoggedIn && <Route path={RoutesName.Login} element={<Login/>}/>}

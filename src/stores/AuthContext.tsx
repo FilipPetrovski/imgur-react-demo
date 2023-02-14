@@ -26,7 +26,6 @@ export const AuthContextProvider = (props: { children: string | number | boolean
 
 	const logoutHandler = () => {
 		window.localStorage.removeItem(TOKEN_KEY);
-		// TODO user is not removed from app state on logout !! make it available globally
 		window.localStorage.removeItem(USER_KEY);
 		setIsLoggedIn(false);
 		navigate(RoutesName.Login);
