@@ -4,6 +4,8 @@
   display: flex;
   justify-content: center;
   margin: 0;
+  height: calc(100% - 95px);
+  overflow: auto;
 
   .Album {
 	position: relative;

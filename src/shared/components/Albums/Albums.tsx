@@ -1,14 +1,21 @@
 import {Album} from '../../models/Album.model';
 import classes from '../Albums/Albums.module.scss';
-import {BaseSyntheticEvent} from 'react';
+import React, {BaseSyntheticEvent, useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import NoItems from '../NoItems/NoItems';
 import {useLocation} from 'react-router';
 import {RoutesName} from '../../models/Routes';
 
-const Albums = (props: { albums: Album[] }) => {
+type Props = {
+	albums: Array<Album>
+}
+
+const ALBUMS_PER_PAGE = 18;
+const Albums: React.FC<Props> = (props: Props) => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const [page, setPage] = useState(1);
+	const [albums, setAlbums] = useState<Array<Album>>([]); // This is just to demonstrate how an infinite scroll will work
 
 	const addHoverClass = (element: BaseSyntheticEvent) => {
 		element.currentTarget.classList.add(classes.HoverAlbum);
@@ -22,9 +29,25 @@ const Albums = (props: { albums: Album[] }) => {
 		navigate(`${location.pathname}/${RoutesName.Album}/${albumId}`);
 	};
 
-	return <div className={`${classes.Albums} row`}>
-		{props.albums.length ?
-			(props.albums.map((album: Album) => (
+	useEffect(() => {
+		setAlbums(props.albums.slice(0, ALBUMS_PER_PAGE));
+	}, [props.albums])
+
+	useEffect(() => {
+		window.addEventListener('scroll', onAlbumsScroll);
+		return () => window.removeEventListener('scroll', onAlbumsScroll);
+	}, []);
+
+	const onAlbumsScroll = (event) => {
+		if (event.target.scrollTop + window.innerHeight > event.target.scrollHeight) {
+			setPage((prevState) => prevState +1);
+			setAlbums(props.albums.slice(0, page * ALBUMS_PER_PAGE));
+		};
+	};
+
+	return <div className={`${classes.Albums} row`} onScroll={onAlbumsScroll}>
+		{albums.length ?
+			(albums.map((album: Album) => (
 				<div key={album.id}
 				     className={`${classes.Album} col-xl-3 col-lg-5 col-md-8 col-sm-10 col-10`}
 				     onMouseOver={addHoverClass}
@@ -33,7 +56,6 @@ const Albums = (props: { albums: Album[] }) => {
 					<div className={classes.ImageWrapper}>
 						<img className="img-fluid"
 							// TODO Replace the src with the actual album cover image
-							// TODO Add infinite scroll and fetch 18 albums at a time
 							// TODO Add Gif/video playing possibility and functionality
 							// TODO Add No found page
 							 src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
