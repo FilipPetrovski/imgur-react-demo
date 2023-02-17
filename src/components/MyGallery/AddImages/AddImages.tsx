@@ -25,16 +25,15 @@ const AddImages = () => {
 	const [progressPercentage, setProgressPercentage] = useState<number>(0);
 	const [images, setImages] = useState<Array<NewlyAddedImage>>([]);
 	const albums: Array<Album> = useSelector((state: RootState) => state.albums);
-	let albumsLoaded = false;
 
 	useEffect(() => {
 		if (albumId) {
 			setSelectedAlbumId(albumId);
-		} else if (albums.length && albumsLoaded) {
+		} else if (albums.length) {
 			const album = albums.find((album) => album.title.toLowerCase() === 'other');
 			setSelectedAlbumId(album.id);
 		}
-	}, [albumId, albums, albumsLoaded]);
+	}, [albumId, albums]);
 
 	useEffect(() => {
 		if (progressPercentage >= 100) {
@@ -51,7 +50,6 @@ const AddImages = () => {
 		httpClient.get(`https://api.imgur.com/3/account/me/albums`).then(
 			(data) => {
 				dispatch(setAlbums(data.data.data.map((album: any) => Album.deserialize(album))));
-				albumsLoaded = true;
 				setLoading(false);
 			}
 		).catch((error: Error) => {
