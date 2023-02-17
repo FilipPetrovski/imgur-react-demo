@@ -1,12 +1,14 @@
 import ShowImage from './ShowImage/ShowImage';
 import {NewlyAddedImage} from '../models/NewlyAddedImage.model';
+import React from 'react';
 
-const ShowImages = (props: {
+type Props = {
 	images: Array<NewlyAddedImage>,
 	removeImage: Function,
 	changeImageTitle: Function,
 	changeImageDescription: Function
-}) => {
+}
+const ShowImages: React.FC<Props> = (props: Props) => {
 	return <div className="container">
 		{props.images.map((image: NewlyAddedImage) =>
 			<ShowImage image={image}

@@ -6,12 +6,13 @@ import {IMAGE_DESCRIPTION_MINIMUM_WORDS_NUMBER, NewlyAddedImage} from '../../mod
 import {CountWords} from '../../../../../utils/NumberOfWords';
 import useDeviceScreenSize from '../../../../../shared/hooks/UseDeviceScreenSize';
 
-function ShowImage(props: {
+type Props = {
 	image: NewlyAddedImage,
 	removeImage: Function
 	changeImageTitle: Function,
 	changeImageDescription: Function
-}) {
+}
+const ShowImage: React.FC<Props> = (props: Props) => {
 	const {deviceScreenWidth} = useDeviceScreenSize();
 
 	return (
@@ -40,6 +41,6 @@ function ShowImage(props: {
 			                                               onClick={() => props.removeImage()}/>}
 		</div>
 	);
-}
+};
 
 export default ShowImage;

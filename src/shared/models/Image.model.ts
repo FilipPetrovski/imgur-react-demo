@@ -23,7 +23,29 @@ export class Image {
 			url: response.link,
 			description: response.description,
 			title: response.title,
-			type: response.type
+			type: this.getMediaType(response.type)
 		});
+	}
+
+	private static getMediaType(type: string): MediaType {
+		if (type.startsWith('video')) {
+			return MediaType.video
+		}
+		if (type.endsWith('gif')) {
+			return MediaType.gif;
+		}
+		return MediaType.image;
+	}
+
+	isVideo(): boolean {
+		return this.type === MediaType.video;
+	}
+
+	isImage(): boolean {
+		return this.type === MediaType.image;
+	}
+
+	isGif(): boolean {
+		return this.type === MediaType.gif;
 	}
 }

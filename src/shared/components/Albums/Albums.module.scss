@@ -28,6 +28,26 @@
 		object-fit: cover;
 		padding: 5px;
 	  }
+
+	  .Gif {
+		position: absolute;
+		top: 6px;
+		right: 6px;
+		font-weight: 600;
+		background-color: $success;
+		color: $white;
+		padding: 4px;
+	  }
+
+	  .VideoMark {
+		position: absolute;
+		top: 6px;
+		right: 6px;
+		font-weight: 600;
+		background-color: $success;
+		color: $white;
+		padding: 4px;
+	  }
 	}
 
 	.TitleWrapper {
@@ -37,6 +57,7 @@
 	  left: 0;
 	  width: 100%;
 	  height: 70px;
+	  border-radius: 10px;
 
 	  .Title {
 		color: $white;

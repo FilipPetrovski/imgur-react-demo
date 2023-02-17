@@ -1,6 +1,6 @@
 import {Album} from '../../models/Album.model';
 import classes from '../Albums/Albums.module.scss';
-import React, {BaseSyntheticEvent, useEffect, useState} from 'react';
+import React, {BaseSyntheticEvent, useCallback, useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import NoItems from '../NoItems/NoItems';
 import {useLocation} from 'react-router';
@@ -31,19 +31,19 @@ const Albums: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
 		setAlbums(props.albums.slice(0, ALBUMS_PER_PAGE));
-	}, [props.albums])
+	}, [props.albums]);
+
+	const onAlbumsScroll = useCallback((event) => {
+		if (event.target.scrollTop + window.innerHeight > event.target.scrollHeight) {
+			setPage((prevState) => prevState + 1);
+			setAlbums(props.albums.slice(0, page * ALBUMS_PER_PAGE));
+		}
+	}, [page, props.albums])
 
 	useEffect(() => {
 		window.addEventListener('scroll', onAlbumsScroll);
 		return () => window.removeEventListener('scroll', onAlbumsScroll);
-	}, []);
-
-	const onAlbumsScroll = (event) => {
-		if (event.target.scrollTop + window.innerHeight > event.target.scrollHeight) {
-			setPage((prevState) => prevState +1);
-			setAlbums(props.albums.slice(0, page * ALBUMS_PER_PAGE));
-		};
-	};
+	}, [onAlbumsScroll]);
 
 	return <div className={`${classes.Albums} row`} onScroll={onAlbumsScroll}>
 		{albums.length ?
@@ -54,12 +54,28 @@ const Albums: React.FC<Props> = (props: Props) => {
 				     onMouseOut={removeHoverClass}
 				     onClick={() => goToAlbumDetails(album.id)}>
 					<div className={classes.ImageWrapper}>
-						<img className="img-fluid"
-							// TODO Replace the src with the actual album cover image
-							// TODO Add Gif/video playing possibility and functionality
-							// TODO Add No found page
-							 src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
-							 alt={album.getCoverImage()?.description}/>
+						{(album.getCoverImage()?.isImage() || album.getCoverImage()?.isGif()) &&
+							<>
+								{album.getCoverImage()?.isGif() && <span className={classes.Gif}>GIF</span>}
+								<img className="img-fluid"
+								     src={album.getCoverImage()?.url}
+								     alt={album.getCoverImage()?.description}/>
+							</>
+						}
+						{album.getCoverImage()?.isVideo() &&
+							<>
+								<span className={classes.VideoMark}>VIDEO</span>
+								<video width="100%"
+								       height="270px"
+								       onMouseOver={(event: any) => event.target.play()}
+								       onMouseOut={(event: any) => event.target.pause()}
+								       muted>
+									<source
+										src={album.getCoverImage()?.url}
+										type="video/mp4"/>
+								</video>
+							</>
+						}
 					</div>
 					<div className={classes.TitleWrapper}>
 						<p className={classes.Title}>{album.title}</p>

@@ -14,7 +14,7 @@ const DropBox = ({onDrop}) => {
 		isDragReject
 	} = useDropzone({
 		accept: {
-			'image/*': ['.jpeg', '.png', '.jpg']
+			'image/jpeg': ['.jpeg', '.png', '.jpg']
 		},
 		onDrop,
 		noClick: true,

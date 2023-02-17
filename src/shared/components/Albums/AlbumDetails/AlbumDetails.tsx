@@ -3,13 +3,7 @@ import {useParams} from 'react-router';
 import {Album} from '../../../models/Album.model';
 import classes from './AlbumDetails.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {
-	faChevronLeft,
-	faChevronRight,
-	faPlus,
-	faPenToSquare,
-	faTrashCan
-} from '@fortawesome/free-solid-svg-icons';
+import {faChevronLeft, faChevronRight, faPenToSquare, faPlus, faTrashCan} from '@fortawesome/free-solid-svg-icons';
 import {faCircleCheck, faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import noImage from '../../../../assets/images/No-Image-Placeholder.svg.png';
 import {RoutesName} from '../../../models/Routes';
@@ -75,12 +69,11 @@ const AlbumDetails = () => {
 			title: title,
 			description: description
 		}).then(() => {
-				const updatedImage: Image = {
+				album.images[currentImageNumber - 1] = new Image({
 					...album.images[currentImageNumber - 1],
 					title: title,
 					description: description
-				};
-				album.images[currentImageNumber - 1] = updatedImage;
+				});
 				toast.success('Image has been updated');
 				setIsEditMode(false);
 				setLoading(false);
@@ -95,19 +88,49 @@ const AlbumDetails = () => {
 		setLoading(true);
 		httpClient.delete(`https://api.imgur.com/3/image/${album.images[currentImageNumber - 1].id}`)
 			.then(() => {
-				const filteredImages: Array<Image> = album.images.filter((image: Image) => image.id !== album.images[currentImageNumber - 1].id);
-				const updatedAlbum: Album = new Album({...album, images: filteredImages, imagesCount: album.imagesCount - 1});
-				if (currentImageNumber === album.imagesCount) {
-					setCurrentImageNumber(currentImageNumber - 1);
+					const filteredImages: Array<Image> = album.images.filter((image: Image) => image.id !== album.images[currentImageNumber - 1].id);
+					const updatedAlbum: Album = new Album({...album, images: filteredImages, imagesCount: album.imagesCount - 1});
+					if (currentImageNumber === album.imagesCount) {
+						setCurrentImageNumber(currentImageNumber - 1);
+					}
+					toast.success('Image has been deleted');
+					setAlbum(updatedAlbum);
+					setLoading(false);
 				}
-				toast.success('Image has been deleted');
-				setAlbum(updatedAlbum);
-				setLoading(false);
-			}
-		).catch((error: Error) => {
+			).catch((error: Error) => {
 				setLoading(false);
 			}
 		);
+	};
+
+	const renderMediaPreview = () => {
+		return <>
+			{album.imagesCount && (album.images[currentImageNumber - 1].isImage() || album.images[currentImageNumber - 1].isGif()) ?
+				<img className="img-fluid"
+				     src={album.images[currentImageNumber - 1].url}
+				     alt={album.images[currentImageNumber - 1].description}/>
+				:
+				(album.imagesCount && album.images[currentImageNumber - 1].isVideo() ?
+					<video width="100%"
+					       className="img-fluid"
+					       autoPlay
+					       muted>
+						<source src={album.images[currentImageNumber - 1].url}
+						        type="video/mp4"/>
+					</video>
+					:
+					<img src={noImage} alt="no preview"/>)
+			}
+			{isEditMode && <input autoFocus={true}
+			                      name="description"
+			                      className={classes.ImageDescription}
+			                      defaultValue={album.images[currentImageNumber - 1].description}
+			/>}
+			{!isEditMode && !!album.imagesCount && album.images[currentImageNumber - 1].description &&
+				<div className={classes.ImageDescription}>
+					{album.images[currentImageNumber - 1].description}
+				</div>}
+		</>;
 	};
 
 	return <div className="row">
@@ -151,22 +174,7 @@ const AlbumDetails = () => {
 					}
 				</header>
 				<section className={classes.ImageWrapper}>
-					{album.imagesCount ?
-						<img className="img-fluid"
-						     src={album.images[currentImageNumber - 1].url}
-						     alt={album.images[currentImageNumber - 1].description}/>
-						:
-						<img src={noImage} alt="no preview"/>
-					}
-					{isEditMode && <input autoFocus={true}
-					                      name="description"
-					                      className={classes.ImageDescription}
-					                      defaultValue={album.images[currentImageNumber - 1].description}
-					/>}
-					{!isEditMode && !!album.imagesCount && album.images[currentImageNumber - 1].description &&
-						<div className={classes.ImageDescription}>
-							{album.images[currentImageNumber - 1].description}
-						</div>}
+					{renderMediaPreview()}
 				</section>
 				<section className={classes.ImageTitleWrapper}>
 					<FontAwesomeIcon className={`${classes.PreviousImageIcon} ${(currentImageNumber <= 1 || isEditMode) && 'disabled'}`}
