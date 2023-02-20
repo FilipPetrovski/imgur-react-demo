@@ -36,16 +36,6 @@ const AddImages = () => {
 	}, [albumId, albums]);
 
 	useEffect(() => {
-		if (progressPercentage >= 100) {
-			setLoading(false);
-			setImages([]);
-			setNewAlbumName('');
-			setProgressPercentage(0);
-			toast.success('Images have been uploaded successfully');
-		}
-	}, [progressPercentage, setLoading]);
-
-	useEffect(() => {
 		setLoading(true);
 		httpClient.get(`https://api.imgur.com/3/account/me/albums`).then(
 			(data) => {
@@ -125,27 +115,39 @@ const AddImages = () => {
 	const uploadImagesToAlbum = (newAlbumId?: string) => {
 		setLoading(true);
 		setProgressPercentage(0);
+		let progress = 0;
 		const config = {
 			onUploadProgress: progressEvent => {
-				let progress = progressPercentage;
-				progress = (progressEvent.loaded / progressEvent.total) * 100;
+				let individualImageUploadProgress = (progressEvent.loaded / progressEvent.total) * 100;
+				if (individualImageUploadProgress === 100) {
+					progress += individualImageUploadProgress / images.length;
+				}
 				setProgressPercentage(progress);
 			}
 		};
+		let requests: Array<any> = [];
 		images.forEach((image: NewlyAddedImage) => {
-			httpClient.post(`https://api.imgur.com/3/image`, {
+			requests.push(httpClient.post(`https://api.imgur.com/3/image`, {
 				album: newAlbumId || selectedAlbumId,
 				image: ConvertToBase64ForUpload(image.src),
 				title: image.title,
 				description: image.description,
 				type: ImageType.base64
-			}, config).then(
-				(data) => {
-				}
-			).catch((error: Error) => {
-				setLoading(false);
-			});
+			}, config));
 		});
+		Promise.all(requests).then(
+			() => {
+				setLoading(false);
+				setImages([]);
+				setNewAlbumName('');
+				setProgressPercentage(0);
+				toast.success('Images have been uploaded successfully');
+			}
+		).catch((error) => {
+				setLoading(false);
+				toast.error('Some image failed to upload !');
+			}
+		);
 	};
 
 	const checkFormValidity = (): boolean => {
