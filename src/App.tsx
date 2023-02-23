@@ -2,23 +2,15 @@ import React, {Suspense, useContext, useEffect, useState} from 'react';
 import Navbar from './components/Navbar/Navbar';
 import classes from './App.module.scss';
 import AuthContext from './stores/AuthContext';
-import {Routes, useNavigate} from 'react-router-dom';
-import {Route, useLocation} from 'react-router';
-import Layout from './components/Layout/Layout';
-import {RoutesName} from './shared/models/Routes';
+import {useLocation} from 'react-router';
 import {User} from './components/Navbar/models/User.model';
 import Loading from './components/Loading/Loading';
 import LoadingContext from './stores/LoadingContext';
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import httpClient from './interceptors/Interceptor';
+import Home from './components/Home/Home';
 
-const MyGallery = React.lazy(() => import('./components/MyGallery/MyGallery'));
-const AddImages = React.lazy(() => import('./components/MyGallery/AddImages/AddImages'));
-const AlbumDetails = React.lazy(() => import('./shared/components/Albums/AlbumDetails/AlbumDetails'));
-const Login = React.lazy(() => import('./components/Login/Login'));
-const Top = React.lazy(() => import('./components/Top/Top'));
-const Hot = React.lazy(() => import('./components/Hot/Hot'));
 
 export const USER_KEY = 'user';
 
@@ -27,7 +19,6 @@ function App() {
 	const authCtx = useContext(AuthContext);
 	const loadingCtx = useContext(LoadingContext);
 	const location = useLocation();
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		const url = location.hash;
@@ -36,7 +27,6 @@ function App() {
 			loadingCtx.setLoading(true);
 			const accessToken = loginParams[0].slice(loginParams[0].indexOf('=') + 1, loginParams[0].length);
 			const userName = loginParams[4].slice(loginParams[4].indexOf('=') + 1, loginParams[4].length);
-			navigate(RoutesName.MyGallery);
 			authCtx.onLogin(accessToken);
 			httpClient.get(`https://api.imgur.com/3/account/${userName}/authorize?client_id=${process.env.REACT_APP_IMGUR_CLIENT_ID}`).then(
 				(response) => {
@@ -50,7 +40,7 @@ function App() {
 				loadingCtx.setLoading(false);
 			});
 		}
-	}, [authCtx, navigate, location, loadingCtx]);
+	}, [authCtx, location, loadingCtx]);
 
 	useEffect(() => {
 		const userFromLocalStorage = window.localStorage.getItem(USER_KEY);
@@ -66,17 +56,7 @@ function App() {
 			<Suspense fallback={<Loading />}>
 				<main>
 					<ToastContainer autoClose={5000} closeOnClick={true} pauseOnHover={false} position={'top-right'} />
-					<Routes>
-						<Route path="/" element={<Layout/>}>
-							{!authCtx.isLoggedIn && <Route path={RoutesName.Login} element={<Login/>}/>}
-							{authCtx.isLoggedIn && <Route path={RoutesName.MyGallery} element={<MyGallery/>}/>}
-							{authCtx.isLoggedIn && <Route path={RoutesName.AddImages} element={<AddImages/>}/>}
-							{authCtx.isLoggedIn && <Route path={`${RoutesName.AddImages}/:albumId`} element={<AddImages/>}/>}
-							<Route path={RoutesName.Hot} element={<Hot/>}/>
-							<Route path={RoutesName.Top} element={<Top/>}/>
-							<Route path={`:gallery/${RoutesName.Album}/:albumId`} element={<AlbumDetails/>}/>
-						</Route>
-					</Routes>
+					<Home />
 				</main>
 			</Suspense>
 		</div>
