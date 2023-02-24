@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import NoItems from '../NoItems/NoItems';
 import {useLocation} from 'react-router';
 import {RoutesName} from '../../models/Routes';
+import NoPhoto from '../../../assets/images/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpeg';
 
 type Props = {
 	albums: Array<Album>
@@ -76,13 +77,19 @@ const Albums: React.FC<Props> = (props: Props) => {
 								</video>
 							</>
 						}
+						{
+							!album.imagesCount && <img className="img-fluid"
+							                           src={NoPhoto}
+							                           alt='No Cover Provided'/>
+						}
 					</div>
 					<div className={classes.TitleWrapper}>
 						<p className={classes.Title}>{album.title}</p>
 						<p className={classes.ImagesCount}>Number of images: {album.imagesCount}</p>
 					</div>
 				</div>
-			)))
+			)
+			))
 			:
 			<NoItems text="No albums found !"/>
 		}

@@ -5,7 +5,7 @@ import classes from './AlbumDetails.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faChevronLeft, faChevronRight, faPenToSquare, faPlus, faTrashCan} from '@fortawesome/free-solid-svg-icons';
 import {faCircleCheck, faCircleXmark} from '@fortawesome/free-regular-svg-icons';
-import noImage from '../../../../assets/images/No-Image-Placeholder.svg.png';
+import noImage from '../../../../assets/images/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpeg';
 import {RoutesName} from '../../../models/Routes';
 import LoadingContext from '../../../../stores/LoadingContext';
 import {useNavigate} from 'react-router-dom';
@@ -16,10 +16,12 @@ import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import httpClient from '../../../../interceptors/Interceptor';
 
+const initialAlbum = new Album({id: '', images: [], imagesCount: 0, title: '', coverImageId: ''});
+
 const AlbumDetails = () => {
 	const [currentImageNumber, setCurrentImageNumber] = useState(1);
 	const [isEditMode, setIsEditMode] = useState(false);
-	const [album, setAlbum] = useState(new Album());
+	const [album, setAlbum] = useState(initialAlbum);
 	const {albumId, gallery} = useParams();
 	const {visible, toggle} = useModal();
 	const navigate = useNavigate();
@@ -112,7 +114,7 @@ const AlbumDetails = () => {
 				:
 				(album.imagesCount && album.images[currentImageNumber - 1].isVideo() ?
 					<video width="100%"
-					       className="img-fluid"
+					       height="100%"
 					       autoPlay
 					       muted>
 						<source src={album.images[currentImageNumber - 1].url}

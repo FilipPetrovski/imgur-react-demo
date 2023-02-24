@@ -27,6 +27,12 @@ export class Album {
 		});
 	}
 
+	static update(album: Album, params: {
+		images: Array<Image>
+	}) {
+		return Object.assign(new Album(), album, params);
+	}
+
 	getCoverImage(): Image | undefined {
 		return this.images?.find((image: Image) => image.id === this.coverImageId);
 	}
