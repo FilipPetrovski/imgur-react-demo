@@ -6,10 +6,7 @@ import ShowImages from './ShowImages/ShowImages';
 import {IMAGE_DESCRIPTION_MINIMUM_WORDS_NUMBER, ImageType, NewlyAddedImage} from './models/NewlyAddedImage.model';
 import {CountWords} from '../../../utils/NumberOfWords';
 import {Album} from '../../../shared/models/Album.model';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../../../stores/globalStore';
 import LoadingContext from '../../../stores/LoadingContext';
-import {setAlbums} from '../../../stores/albumsSlice';
 import {ConvertToBase64ForUpload} from '../../../utils/ConvertToBase64ForUpload';
 import ProgressBar from '../../../shared/components/ProgressBar/ProgressBar';
 import {toast} from 'react-toastify';
@@ -18,13 +15,12 @@ import httpClient from '../../../interceptors/Interceptor';
 
 const AddImages = () => {
 	const {setLoading} = useContext(LoadingContext);
-	const dispatch = useDispatch();
 	const {albumId} = useParams();
 	const [selectedAlbumId, setSelectedAlbumId] = useState('');
 	const [newAlbumName, setNewAlbumName] = useState<string>('');
 	const [progressPercentage, setProgressPercentage] = useState<number>(0);
 	const [images, setImages] = useState<Array<NewlyAddedImage>>([]);
-	const albums: Array<Album> = useSelector((state: RootState) => state.albums);
+	const [albums, setAlbums] = useState<Array<Album>>([]);
 
 	useEffect(() => {
 		if (albumId) {
@@ -39,13 +35,13 @@ const AddImages = () => {
 		setLoading(true);
 		httpClient.get(`https://api.imgur.com/3/account/me/albums`).then(
 			(data) => {
-				dispatch(setAlbums(data.data.data.map((album: any) => Album.deserialize(album))));
+				setAlbums(data.data.data.map((album: any) => Album.deserialize(album)));
 				setLoading(false);
 			}
 		).catch((error: Error) => {
 			setLoading(false);
 		});
-	}, [dispatch, setLoading]);
+	}, [setLoading]);
 
 	const onDrop = useCallback((acceptedFiles: Array<any>) => {
 		acceptedFiles.map((file, index) => {
