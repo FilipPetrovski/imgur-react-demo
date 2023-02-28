@@ -14,26 +14,31 @@ const MyGallery = () => {
 	const dispatch = useDispatch();
 	const {setLoading} = useContext(LoadingContext);
 
-	const setAlbumImages = useCallback((album: Album) => {
-		if (album.imagesCount) {
-			httpClient.get(`https://api.imgur.com/3/album/${album.id}/image/${album.coverImageId}`).then(
-				(data) => {
-					const coverImage: Image = Image.deserialize(data.data.data);
-					album = Album.update(album, {images: [coverImage]});
-				}).catch((error: Error) => {
-					setLoading(false)
-				}
-			)
-		}
-	}, [setLoading])
+	const setAlbumImages = useCallback((albums: Array<Album>) => {
+		setLoading(true);
+		let requests = [];
+		const emptyAlbums = albums.filter((album: Album) => album.imagesCount === 0);
+		albums.filter(album => album.imagesCount).forEach((album: Album) => requests.push(httpClient.get(`https://api.imgur.com/3/album/${album.id}/image/${album.coverImageId}`)));
+		Promise.all(requests).then(result => {
+			let updatedAlbumsWithImages: Array<Album> = [];
+			result.forEach((data) => {
+				const image: Image = Image.deserialize(data.data.data);
+				const albumToUpdate = albums.find((album: Album) => album.coverImageId === image.id);
+				const updatedAlbum = Album.update(albumToUpdate, {images: [image]});
+				updatedAlbumsWithImages.push(updatedAlbum);
+				const updatedAlbums = [...updatedAlbumsWithImages, ...emptyAlbums];
+				dispatch(setAlbums(updatedAlbums));
+			});
+			setLoading(false);
+		}).catch(error => setLoading(false));
+	}, [setLoading, dispatch]);
 
 	useEffect(() => {
 		setLoading(true);
 		httpClient.get(`https://api.imgur.com/3/account/me/albums`).then(
 			(data) => {
 				const albums: Array<Album> = data.data.data.map((album: any) => Album.deserialize(album));
-				albums.forEach((album: Album) => setAlbumImages(album));
-				dispatch(setAlbums(albums));
+				setAlbumImages(albums);
 				setLoading(false);
 			}
 		).catch((error: Error) => {

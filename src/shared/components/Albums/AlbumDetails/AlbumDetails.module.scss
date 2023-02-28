@@ -56,12 +56,12 @@
 	width: 100%;
 	position: relative;
 	height: calc(600px - 24px - 32px - 32px - 30px);
+	display: flex;
+	justify-content: center;
 
 	img {
-	  width: inherit;
-	  min-width: inherit;
 	  height: inherit;
-	  object-fit: cover;
+	  max-width: 100%;
 	}
 
 	.ImageDescription {

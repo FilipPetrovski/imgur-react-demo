@@ -108,13 +108,14 @@ const AlbumDetails = () => {
 	const renderMediaPreview = () => {
 		return <>
 			{album.imagesCount && (album.images[currentImageNumber - 1].isImage() || album.images[currentImageNumber - 1].isGif()) ?
-				<img className="img-fluid"
-				     src={album.images[currentImageNumber - 1].url}
+				<img src={album.images[currentImageNumber - 1].url}
+				     key={album.images[currentImageNumber - 1].url}
 				     alt={album.images[currentImageNumber - 1].description}/>
 				:
 				(album.imagesCount && album.images[currentImageNumber - 1].isVideo() ?
 					<video width="100%"
 					       height="100%"
+					       key={album.images[currentImageNumber - 1].url}
 					       autoPlay
 					       muted>
 						<source src={album.images[currentImageNumber - 1].url}
