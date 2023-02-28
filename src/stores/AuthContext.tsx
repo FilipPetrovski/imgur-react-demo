@@ -5,7 +5,7 @@ import {RoutesName} from '../shared/models/Routes';
 
 export const TOKEN_KEY = 'access_token';
 
-const AuthContext = React.createContext({
+export const AuthContext = React.createContext({
 	isLoggedIn: false,
 	onLogout: () => {
 	},
@@ -14,15 +14,8 @@ const AuthContext = React.createContext({
 });
 
 export const AuthContextProvider = (props: { children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!window.localStorage.getItem(TOKEN_KEY));
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		const accessToken = window.localStorage.getItem(TOKEN_KEY);
-		if (accessToken) {
-			setIsLoggedIn(true);
-		}
-	}, [])
 
 	const logoutHandler = () => {
 		window.localStorage.removeItem(TOKEN_KEY);
